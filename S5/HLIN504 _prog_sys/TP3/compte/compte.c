@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 void compte(char const *argv)
 {
 
-    int f = open(argv, 0);
+    int f = open(argv, O_RDONLY);
     if( f == -1 ){
         perror("[ ERROR ] no file name give \n");
         exit(0);
