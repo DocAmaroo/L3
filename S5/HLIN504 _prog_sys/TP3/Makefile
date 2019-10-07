@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -pedantic -ansi
+CFLAGS = -Wall
 SOURCE = $(wildcard *.c)
 PROGNAME = run
 
@@ -7,7 +7,7 @@ MSQ = @
 RM = $(MSQ)rm -f
 CLEAR = $(MSQ)clear
 
-MSG = $(MSQ)echo 
+MSG = $(MSQ)echo
 MSG1 = $(MSG) "Compilation de $^ ==> $@"
 MSG_OK = $(MSG) ".......OK"
 
