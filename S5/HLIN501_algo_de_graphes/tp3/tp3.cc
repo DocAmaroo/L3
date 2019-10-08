@@ -7,7 +7,6 @@ using namespace std;
 
 
 void affichageVector( vector<int> v ){
-  
   int i=0;
   cout << "[ ";
   while( i < v.size() - 1 ){
@@ -18,12 +17,13 @@ void affichageVector( vector<int> v ){
 }
 
 void affichageAllVector(int n, vector<int> v[] ){
-    
   for( int i=0; i < n; i++ ){
     cout << "Vector " << i << " : ";
-    affichageVector(v[i]);
-    }
+    if( v[i].size() == 0 ) { cout << "[ ]" << endl; }
+    else{ affichageVector(v[i]); }
+  }
 }
+
 void voisinRandom(int n, int m, vector<int>voisins[]){
 
   int point1;
@@ -63,7 +63,6 @@ void voisinRandom(int n, int m, vector<int>voisins[]){
     voisins[point2].push_back(point1);
   }
   
-  //affichageVector( voisins[point1] );
   affichageAllVector(n, voisins);
 
 }

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 git add *
 
 printf '\n## REMOVING FILES FROM "add *" ## \n'
