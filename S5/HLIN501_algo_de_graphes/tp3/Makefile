@@ -1,13 +1,13 @@
-CC = gcc
-CFLAGS = -Wall
-SOURCE = $(wildcard *.c)
+CC = g++
+CFLAGS = -Wall -pedantic -ansi
+SOURCE = $(wildcard *.cc)
 PROGNAME = run
 
 MSQ = @
 RM = $(MSQ)rm -f
 CLEAR = $(MSQ)clear
 
-MSG = $(MSQ)echo
+MSG = $(MSQ)echo 
 MSG1 = $(MSG) "Compilation de $^ ==> $@"
 MSG_OK = $(MSG) ".......OK"
 
@@ -16,7 +16,7 @@ all : $(PROGNAME)
 #clean
 cls :
 	$(RM) *.o
-	$(RM) $(SOURCE:.c=)
+	$(RM) $(SOURCE:.cc=)
 
 clean : cls
 	$(MSG) "Cleanup is running...."
@@ -24,7 +24,7 @@ clean : cls
 	$(MSG_OK)
 
 #Compilation
-$(PROGNAME) : $(SOURCE:.c=.o)
+$(PROGNAME) : $(SOURCE:.cc=.o)
 	$(MSG1)
 	$(CC) $(CFLAGS) $^ -o $@
 	$(CLEAR)
