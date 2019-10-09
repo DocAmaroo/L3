@@ -32,11 +32,3 @@ Thumbs.db
 # Eclipse metadata #
 ####################
 *.metadata
-
-# My files #
-############
-<<<<<<< HEAD
-./S5/HLIN501_algo_de_graphes/cours.pdf
-=======
-./S5/HLIN501_algo_de_graphes/cours.pdf
->>>>>>> 3b944a33ae2776846ed091ee8b35cc348e0e5403
