@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # CONSTANT COLOR
-ORANGE='\033[4;33m'
+ORANGE='\033[3;33m'
 NC='\033[0m' # No Color
 
 git add *
