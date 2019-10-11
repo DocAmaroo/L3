@@ -85,7 +85,7 @@
             //echo $query;
             echo $query;
             $final_query = $dbh->query($query) or die("Requete impossible !");
-            echo "<tabme>"
+            echo "<tabme>";
             foreach( $final_query as $key ){
                 echo "<tr> 
                     <td> {$key['numStageA']} </td>
