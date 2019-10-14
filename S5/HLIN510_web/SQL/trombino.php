@@ -74,10 +74,10 @@
             }
             if ( !empty($_POST['order'] )){
                 switch ($_POST['order']){	 
-                    case "opt" : $query.= "ORDER BY optnom, nom, prenom;";break;
-                    case "groupe" : $query.= "ORDER BY groupe, nom, prenom;";break;
-                    case "statut" : $query.= "ORDER BY statut, nom, prenom;";break;
-                    default : $query.= "ORDER BY nom, prenom;";break;
+                    case "opt" : $query.= " ORDER BY opt, nom, prenom;";break;
+                    case "groupe" : $query.= " ORDER BY groupe, nom, prenom;";break;
+                    case "statut" : $query.= " ORDER BY statut, nom, prenom;";break;
+                    default : $query.= " ORDER BY nom, prenom;";break;
                 }
             }
             else{ $query.= "ORDER BY nom, prenom;";}
@@ -85,10 +85,17 @@
             //echo $query;
             echo $query;
             $final_query = $dbh->query($query) or die("Requete impossible !");
-            echo "<tabme>";
+            echo "<table> <br> <br>";
             foreach( $final_query as $key ){
                 echo "<tr> 
-                    <td> {$key['numStageA']} </td>
+                <td> {$key['nom']} </td>
+                <td> {$key['prenom']} </td>
+                <td> {$key['numStageA']} </td>
+                <td> {$key['opt']} </td>
+                <td> {$key['opt.name']} </td>
+                <tr>";
+            }
+            echo "</table>";
         ?>
     </body>
 </html>
