@@ -4,6 +4,6 @@ public class Dauphine implements Femelle{
 
 	
 	public String toString(){
-		return this.getClass().getCanonicalName();
+		return this.getClass().getName();
 	}
 }
