@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <fstream>
 
 using namespace std;
@@ -64,9 +65,67 @@ void voisinRandom(int n, int m, vector<int>voisins[]){
   }
   
   affichageAllVector(n, voisins);
-
 }
 
+void affichePL(int voisin, int ordre, int pere, int niveau){
+  (voisin == -1)? cout << "RACINE : 0" : cout << "VOISIN : "<< voisin << " - PERE : "<< pere;
+  cout << " - NIVEAU : "<< niveau;
+  cout << " - ORDRE : "<< ordre << endl;
+}
+
+void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], int pere[]){
+
+  // On initialise dv
+  int* dv = new int[n];
+  for(int i = 0 ; i < n ; i++){
+    dv[i] = 0;
+    ordre[i] = -1;
+    pere[i] = -1;
+    niveau[i] = -1;
+  }
+
+  // Choix de la racine
+  int racine = 0;
+  dv[racine] = 1;
+  ordre[racine] = 1;
+  pere[racine] = racine;
+  niveau[racine] = 0;
+  affichePL(-1, ordre[racine], pere[racine], niveau[racine]);
+  
+  // Compteur pour dire à quel moment on a vu notre élément
+  int t = 2;
+
+  // on crée une file
+  queue<int> AT;
+
+  // on ajoute la racine dans la file
+  AT.push(racine);
+
+  while( !AT.empty() ){
+    
+    int v = AT.front(); // on récupère l'élement en haut de la file
+
+    AT.pop(); // on l'enlève de la file
+    int size = (int)voisins[v].size();
+
+    for( int i=0; i < size ; i++){
+
+      int x = voisins[v][i];
+
+      if ( dv[x] == 0 ){
+        dv[x] = 1;
+        AT.push(x);
+        ordre[x] = t;
+        t++;
+        pere[x] = v;
+        niveau[x] = niveau[v] + 1;
+
+        affichePL(voisins[v][i], ordre[x], pere[x], niveau[x]);
+      }
+    }
+  }
+  delete[] dv;
+}
 
 int main()
 {
@@ -82,5 +141,6 @@ int main()
   int niveau[n];                            // Le niveau du point.
 
   voisinRandom(n, m, voisins);
+  parcoursLargeur(n, voisins, niveau, ordre, pere);
   return EXIT_SUCCESS;
 }
