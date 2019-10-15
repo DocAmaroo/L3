@@ -127,6 +127,25 @@ void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], in
   delete[] dv;
 }
 
+
+void ecritureNiveaux(int n, int niveau[]){
+  
+  int pas_dans_composante = 0;
+  int temp = 0;
+
+  for( int i=0; i < n; i++){
+    if ( niveau[i] == -1){
+      pas_dans_composante++;
+    }
+    else{
+      cout << "Il y a " << niveau[i] << " sommet(s) au niveau " << i << endl;
+    }
+  }
+  cout << "Il y a " << pas_dans_composante << " sommet(s) qui ne sont pas dans la composante de 0." << endl;
+
+}
+
+
 int main()
 {
   int n;                                    // Le nombre de sommets.
@@ -142,5 +161,6 @@ int main()
 
   voisinRandom(n, m, voisins);
   parcoursLargeur(n, voisins, niveau, ordre, pere);
+  ecritureNiveaux(n, niveau);
   return EXIT_SUCCESS;
 }
