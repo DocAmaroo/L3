@@ -35,11 +35,11 @@
 
             <table style="text-align:left">
                 <tr>
-				    <th> Numéro </th>
-				    <th> Proposition </th>
-				    <th> Bien placé(s) </th>
-				    <th> Mal placé(s) </th>
-			    </tr>
+                    <th> Numéro </th>
+                    <th> Proposition </th>
+                    <th> Bien placé(s) </th>
+                    <th> Mal placé(s) </th>
+                </tr>
                 
                 <?php 
 
@@ -149,7 +149,6 @@
                         $_SESSION["affichage"] = $_SESSION["affichage"].$last_try;
                         echo "{$_SESSION["affichage"]}";
                         echo "$new_try";
-                           
                     }
                 ?>
             

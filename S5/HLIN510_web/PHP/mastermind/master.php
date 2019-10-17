@@ -1,13 +1,35 @@
 <?php
+    ini_set('display_errors', 1); error_reporting(E_ALL); 
+    
     //include "Mastermind.php"; // PLUS NÉCESSAIRE AVEC AUTOLOAD !
     function __autoload($classname){ // avant le session_start !
         include './' . $classname . '.php';
     }
-    session_start(); 
-    if (isset($_POST['nouveau'])){    // SI nouvelle partie
+
+    session_start();
+    define('PREFIXE','master_');
+    
+    if (isset($_POST['sauve']) && isset($_POST['nom']) && isset($_SESSION['jeu'])){
+        // sauver la partie en cours dans un cookie 
+        setcookie(PREFIXE.$_POST['nom'],serialize($_SESSION['jeu']),time()+86400) or 
+            print 'Impossible de sauvegarder la partie en cours !';
+        echo "Partie en cours sauvegardée sous le nom : {$_POST['nom']} !<br/>\n";
+    }
+    else if(isset($_POST['restaure']) && isset($_POST['nom'])){
+        // restaurer
+        $n=PREFIXE.$_POST['nom'];
+        if (isset($_COOKIE[$n])){
+            // ATTENTION au stripslashes($_COOKIE[$n]) !!!
+            $_SESSION['jeu']=unserialize(get_magic_quotes_gpc()? stripslashes($_COOKIE[$n]):$_COOKIE[$n]);
+            echo("Partie restaurée : {$_POST['nom']} !");
+        } 
+        else {
+            echo("Impossible de restaurer la partie {$_POST['nom']} !");
+        }
+    }
+    if (isset($_POST['nouveau'])){
         $_SESSION=array();
     }
-    ini_set('display_errors', 1); error_reporting(E_ALL); 
 ?>
 
 <!DOCTYPE html>
@@ -28,8 +50,8 @@
                     if(isset($_SESSION['jeu'])) // restauration objet Mastermind
                     {	
                         $jeu=$_SESSION['jeu'];
-                        print_r($jeu);  // DEBUG
-                        echo("<br>");
+                        // print_r($jeu);  // DEBUG
+                        // echo("<br>");
                         $taille=$jeu->getTaille();
                     }
                     else // début de partie
@@ -113,7 +135,11 @@
         <?php
         }
         ?>
-    <input type="submit" name="nouveau" value="Nouvelle Partie">
-   </form>
-  </body>
+        <input type="submit" name="nouveau" value="Nouvelle Partie">
+        <br/>
+        Nom de sauvegarde : <input type="text" name="nom" size="10">
+        <input type="submit" name="sauve" value="Sauver la partie en cours">
+        <input type="submit" name="restaure" value="Restaurer une partie sauvegardée">
+        </form>
+    </body>
 </html>
