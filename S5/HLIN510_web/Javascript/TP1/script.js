@@ -1,15 +1,39 @@
-/**
- * @type       Javascript
- * @file       script.js of index.html
- * @author     Canta Thomas <thomas.canta@ent.umontpellier.fr>
- * @repo 	   https://gitlab.info-ufr.univ-montp2.fr/Maxime/Humeur_de_tweet
-*/
+function test( noeud ){
+    
+    var type = "null";
+    switch(noeud.nodeType){
+        case 1:
+            console.log("je suis un element");
+            type = "element";
+            break;
+        case 2:
+            console.log("je suis un attribut");
+            type = "attribut";
+            break;
+        case 3:
+            console.log("je suis un texte");
+            type = "texte";
+            break;
+        default : 
+            console.log("je suis autre chose")
+            type = "null";
+    }
+
+    console.log(noeud.childNodes);
+}
+
 
 function explorer(){
-    var new_div = document.createElement("div");
-    // var text = document.createTextNode("allo");
-    // new_div.appendChild(text);
-
-    new_div.textContent = "allo";
-    document.body.appendChild(new_div);
+    var new_div = document.createElement("div"); // <div> </div>
+    var text = document.createTextNode("allo"); // "allo"
+    new_div.appendChild(text); // <div> allo </div>
+    document.body.appendChild(new_div); // rajoute div comme étant un enfant de body
+    test(document);
 }
+
+
+
+
+// LA POUBELLE
+
+
