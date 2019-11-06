@@ -11,7 +11,6 @@ void pointRandom(int n, coord point[]){
 
   srand(time(NULL));
 
-
   int x = 0;
   int y = 0;
   for ( int i=0; i < n; i++){

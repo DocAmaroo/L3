@@ -6,11 +6,9 @@
 using namespace std;
 typedef struct coord{int abs; int ord;} coord;
 
-void affichageGraphique(int n, coord point[], int arbre[][2]){
-  // Cree le fichier Exemple.ps qui affiche
-  // les points et l'arbre de Kruskal.
+void affichageGraphique(int n, int m, coord point[], int arete[][2], string name){
   ofstream output;                           
-  output.open("Exemple.ps",ios::out);
+  output.open(name,ios::out);
   output << "%!PS-Adobe-3.0" << endl;
   output << "%%BoundingBox: 0 0 612 792" << endl;
   output << endl;  
@@ -23,9 +21,9 @@ void affichageGraphique(int n, coord point[], int arbre[][2]){
       output << endl;
     }
   output << endl;
-  for(int i=0;i<n-1;i++){
-    output << point[arbre[i][0]].abs << " " << point[arbre[i][0]].ord << " moveto" << endl;
-    output << point[arbre[i][1]].abs << " " << point[arbre[i][1]].ord << " lineto" << endl;
+  for(int i=0;i<m;i++){
+    output << point[arete[i][0]].abs << " " << point[arete[i][0]].ord << " moveto" << endl;
+    output << point[arete[i][1]].abs << " " << point[arete[i][1]].ord << " lineto" << endl;
     output << "stroke" << endl;
     output << endl;
   }
