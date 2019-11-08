@@ -127,6 +127,7 @@ void dijkstra(int n,vector<int> voisin[],coord point[],int pere[]){
   d[racine] = 0;
   while( existe(n, dis) )
 }
+
 int construireArbre(int n,int arbre[][2],int pere[]);
 
 int main(){
