@@ -137,26 +137,31 @@ void dijkstra(int n,vector<int> voisin[],coord point[],int pere[]){
     traite[i] = false; 
   }
 
-  pere[0] = 0;
-  d[0] = 0;
+  int racine = 0;
+  pere[racine] = 0;
+  d[racine] = 0;
 
   while( existe(n, d, traite, x) ){
     traite[x] = true;
-    for ( int i=0; i < voisin[x].size(); i++ ){
-      if ( !traite[i] && ( d[voisin[x][i]] > ( d[x] + distance(point[x], point[voisin[x][i]])) ) ){
-        d[voisin[x][i]] = d[x] + distance(point[x], point[voisin[x][i]]);
-        pere[voisin[x][i]] = x; 
+    for(int i = 0; i < voisin[x].size() ; i++){
+      int y = voisin[x][i];
+      if(traite[y] == 0 && d[y] > d[x] + distance(point[x],point[y])){
+        d[y] = d[x] + distance(point[x],point[y]);
+        pere[y] = x;
       }
     }
   }
   afficheDijkstra(n, d, pere);
 }
 
-int construireArbre(int n,int arbre[][2],int pere[]){
-  for ( int i = 0; i < n; i++ ){
+int construireArbre(int n, int arbre[][2], int pere[]){
+  int k = 0;
+  for(int i = 0; i < n; i++){
     arbre[i][0] = i;
     arbre[i][1] = pere[i];
+    k++;
   }
+  return k;
 }
 
 int main(){
