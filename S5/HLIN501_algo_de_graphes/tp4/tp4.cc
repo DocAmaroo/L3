@@ -152,7 +152,12 @@ void dijkstra(int n,vector<int> voisin[],coord point[],int pere[]){
   afficheDijkstra(n, d, pere);
 }
 
-int construireArbre(int n,int arbre[][2],int pere[]);
+int construireArbre(int n,int arbre[][2],int pere[]){
+  for ( int i = 0; i < n; i++ ){
+    arbre[i][0] = i;
+    arbre[i][1] = pere[i];
+  }
+}
 
 int main(){
   int n;                           // Le nombre de points.
@@ -176,6 +181,9 @@ int main(){
   cout << "\n## AFFICHAGE NB ARETES" << endl;
   cout << "Nb_arete = " << m << endl;
   dijkstra(n, voisin, point, pere);
+  construireArbre(n, arbre, pere);
 
+  name = "Arbre.ps";
+  affichageGraphique(n, m, point, arbre, name);
   return EXIT_SUCCESS;
 }

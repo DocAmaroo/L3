@@ -21,7 +21,14 @@ void affichageGraphique(int n, int m, coord point[], int arete[][2], string name
       output << endl;
     }
   output << endl;
-  for(int i=0;i<m;i++){
+  int taille = 0;
+  if ( name == "Arbre.ps"){
+    taille = n-1;
+  }
+  else{
+    taille = m;
+  }
+  for(int i=0;i<taille;i++){
     output << point[arete[i][0]].abs << " " << point[arete[i][0]].ord << " moveto" << endl;
     output << point[arete[i][1]].abs << " " << point[arete[i][1]].ord << " lineto" << endl;
     output << "stroke" << endl;
