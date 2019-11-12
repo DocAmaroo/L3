@@ -6,7 +6,7 @@
 using namespace std;
 typedef struct coord{int abs; int ord;} coord;
 
-void affichageGraphique(int n, int m, coord point[], int arete[][2], string name){
+void affichageGraphique(int n, int m, coord point[], int tab[][2], string name){
   ofstream output;                           
   output.open(name,ios::out);
   output << "%!PS-Adobe-3.0" << endl;
@@ -21,9 +21,17 @@ void affichageGraphique(int n, int m, coord point[], int arete[][2], string name
       output << endl;
     }
   output << endl;
-  for(int i=0;i<m;i++){
-    output << point[arete[i][0]].abs << " " << point[arete[i][0]].ord << " moveto" << endl;
-    output << point[arete[i][1]].abs << " " << point[arete[i][1]].ord << " lineto" << endl;
+  
+  int taille = 0;
+  if ( name == "Arbre.ps"){
+    taille = n;
+  }
+  else{
+    taille = m;
+  }
+  for(int i=0;i<taille;i++){
+    output << point[tab[i][0]].abs << " " << point[tab[i][0]].ord << " moveto" << endl;
+    output << point[tab[i][1]].abs << " " << point[tab[i][1]].ord << " lineto" << endl;
     output << "stroke" << endl;
     output << endl;
   }
