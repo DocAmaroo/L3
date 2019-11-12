@@ -105,27 +105,51 @@ void affichageArete(int m, int arete[][2] ){
 void affichageGraphique(int n, int m, coord point[], int arete[][2], string name);
 
 bool existe(int n,int dis[],bool traite[],int &x){
+  int min = 100001;
+  bool res = false;
+
   for ( int i=0; i < n; i++ ){
-    if ( traite[i] == 0 ){
-      if ( dis[i] < x){
-        
+    if ( !traite[i] ){
+      res = true;
+      if ( dis[i] < min ){
+        min = dis[i];
+        x = i;
       }
-      return true;
     }
   }
-  return false;
+  return res;
 }
+
+void afficheDijkstra(int n, int d[], int pere[]){
+  cout << "\n## AFFICHAGE DES DISTANCES" << endl;
+  for ( int i = 0; i < n; i++){
+    cout << "Distance jusqu'à " << i << " : " << d[i] << " __ pere : " << pere[i] << endl; 
+  } 
+}
+
 void dijkstra(int n,vector<int> voisin[],coord point[],int pere[]){
-  int racine = 0;
   int d[n];
-  int traite[n];
+  bool traite[n];
+  int x;
+
   for( int i=0; i < n; i++ ){
-    d[i] = -1;
-    traite[i] = 0; 
+    d[i] = 100000; //rep +inf
+    traite[i] = false; 
   }
-  pere[0] = racine;
-  d[racine] = 0;
-  while( existe(n, dis) )
+
+  pere[0] = 0;
+  d[0] = 0;
+
+  while( existe(n, d, traite, x) ){
+    traite[x] = true;
+    for ( int i=0; i < voisin[x].size(); i++ ){
+      if ( !traite[i] && ( d[voisin[x][i]] > ( d[x] + distance(point[x], point[voisin[x][i]])) ) ){
+        d[voisin[x][i]] = d[x] + distance(point[x], point[voisin[x][i]]);
+        pere[voisin[x][i]] = x; 
+      }
+    }
+  }
+  afficheDijkstra(n, d, pere);
 }
 
 int construireArbre(int n,int arbre[][2],int pere[]);
@@ -134,7 +158,7 @@ int main(){
   int n;                           // Le nombre de points.
   cout << "Entrer le nombre de points: ";
   cin >> n; 
-  int dmax=300;                     // La distance jusqu'a laquelle on relie deux points.
+  int dmax=50;                     // La distance jusqu'a laquelle on relie deux points.
   coord point[N];                  // Les coordonnees des points.
   vector<int> voisin[N];           // Les listes de voisins.          
   int arbre[N-1][2];               // Les aretes de l'arbre de Dijkstra.
@@ -149,7 +173,9 @@ int main(){
   voisins2arete(n, voisin, arete);
   affichageGraphique(n, m, point, arete, name);
   affichageArete(m, arete);
-  cout << "Nb arête " << m << endl;
+  cout << "\n## AFFICHAGE NB ARETES" << endl;
+  cout << "Nb_arete = " << m << endl;
+  dijkstra(n, voisin, point, pere);
 
   return EXIT_SUCCESS;
 }
