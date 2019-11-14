@@ -59,6 +59,10 @@ function modifyVerticalCoord(points, int){
     return points;
 }
 
+
+/**
+ * Get a random color
+ */
 function getRandomColor() {
     let letters = '0123456789ABCDEF';
     let color = '#';
@@ -137,7 +141,7 @@ function generateHive(rayon, nbLig, nbCol){
         }
         else { color = "gray"; tmp_nbCol = nbCol; }
 
-        /**
+        /**nbCol
          * recreate the new 'points' attribut
          */
         attr_points = createHexagonAttr(points);
@@ -148,7 +152,7 @@ function generateHive(rayon, nbLig, nbCol){
             .append("polygon")
             .attr("id", "hexa_"+l+c)
             .attr("points", attr_points)
-            .style("fill", color)
+            .style("fill", getRandomColor())
             .on("mouseover", function(){
                 d3.select(this)
                 .style("fill", getRandomColor());
@@ -163,4 +167,23 @@ function generateHive(rayon, nbLig, nbCol){
             
         }
     }
+}
+
+
+/**
+ * Execute the code every sec
+ * @param {int} rayon 
+ * @param {int} nbLig 
+ * @param {int} nbCol
+ * @param {int} sec
+ */
+function clock(rayon, nbLig, nbCol, sec){
+    let timer = sec*1000;
+    var t = setInterval(
+        function(){
+            d3.select("#ruche > svg").remove()
+            generateHive(rayon, nbLig, nbCol);
+        }
+        ,timer
+    );
 }
