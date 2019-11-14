@@ -109,12 +109,12 @@ function generateHive(rayon, nbLig, nbCol){
     /**
      * horizontal & vertical space between each hexagon
      */
-    const h_space_between = max_x, v_space_between = diametre*0.8;
+    const h_space_between = max_x*0.929, v_space_between = diametre*0.75;
 
     d3.select("#ruche")
     .append("svg")
     .attr("width", max_x*nbCol)
-    .attr("height", diametre*0.81*nbLig);
+    .attr("height", diametre*nbLig);
 
     for( let l=0; l < nbLig; l++ ){
 
@@ -137,7 +137,7 @@ function generateHive(rayon, nbLig, nbCol){
         if ( !(l%2 == 0) ){ 
             tmp_nbCol = nbCol-1;
             color = "black";
-            points = modifyHorizontalCoord(points, max_x/2);
+            points = modifyHorizontalCoord(points, max_x*0.465);
         }
         else { color = "gray"; tmp_nbCol = nbCol; }
 
