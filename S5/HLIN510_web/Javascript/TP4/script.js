@@ -87,7 +87,7 @@ function getCoordHexaProto(rayon){
  * @param {int} nbLig 
  * @param {int} nbCol 
  */
-function genereRuche(rayon, nbLig, nbCol){
+function generateHive(rayon, nbLig, nbCol){
 
     var points = getCoordHexaProto(rayon);
     var max_x = getMaxHorizontalCoord(points);
@@ -97,7 +97,7 @@ function genereRuche(rayon, nbLig, nbCol){
     /**
      * horizontal & vertical space between each hexagon
      */
-    var h_space_between = max_x/1.02, v_space_between = diametre/1.2;
+    var h_space_between = max_x, v_space_between = diametre/1;
 
     d3.select("#ruche")
     .append("svg")
