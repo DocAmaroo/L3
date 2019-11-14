@@ -11,7 +11,7 @@ function degToRadian(deg){
  * @param {Array[Array[]...]} points 
  */
 function createHexagonAttr(points){
-    var attr_points = "";
+    let attr_points = "";
 
     for ( pts of points ){
         attr_points += pts[0]+","+pts[1]+" ";
@@ -25,7 +25,7 @@ function createHexagonAttr(points){
  * @param {Array[Array[]...]} points 
  */
 function getMaxHorizontalCoord(points){
-    var max_x = 0;
+    let max_x = 0;
 
     for ( pts of points ){
         max_x = Math.max(pts[0], max_x);
@@ -59,14 +59,22 @@ function modifyVerticalCoord(points, int){
     return points;
 }
 
+function getRandomColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 /**
  * Return the coordinate of the first hexagon
  * @param {int} rayon 
  */
 function getCoordHexaProto(rayon){
 
-    var diametre = rayon*2;
-    var points = new Array(), angle;
+    let points = new Array(), diametre = rayon*2, angle;
 
     for ( let i = 0; i < 6; i++ ){
         angle = degToRadian(60*(i+1));
@@ -89,20 +97,20 @@ function getCoordHexaProto(rayon){
  */
 function generateHive(rayon, nbLig, nbCol){
 
-    var points = getCoordHexaProto(rayon);
-    var max_x = getMaxHorizontalCoord(points);
-    var attr_points = "";
-    var diametre = rayon*2, tmp_nbCol = nbCol, color = "";
+    let points = getCoordHexaProto(rayon);
+    const max_x = getMaxHorizontalCoord(points);
+    let attr_points = "";
+    let diametre = rayon*2, tmp_nbCol = nbCol, color = "";
 
     /**
      * horizontal & vertical space between each hexagon
      */
-    var h_space_between = max_x, v_space_between = diametre/1;
+    const h_space_between = max_x, v_space_between = diametre*0.8;
 
     d3.select("#ruche")
     .append("svg")
-    .attr("width", diametre*nbCol)
-    .attr("height", diametre*nbLig);
+    .attr("width", max_x*nbCol)
+    .attr("height", diametre*0.81*nbLig);
 
     for( let l=0; l < nbLig; l++ ){
 
@@ -125,7 +133,7 @@ function generateHive(rayon, nbLig, nbCol){
         if ( !(l%2 == 0) ){ 
             tmp_nbCol = nbCol-1;
             color = "black";
-            points = modifyHorizontalCoord(points, rayon);
+            points = modifyHorizontalCoord(points, max_x/2);
         }
         else { color = "gray"; tmp_nbCol = nbCol; }
 
@@ -143,11 +151,11 @@ function generateHive(rayon, nbLig, nbCol){
             .style("fill", color)
             .on("mouseover", function(){
                 d3.select(this)
-                .style("fill", "red");
+                .style("fill", getRandomColor());
             })
             .on("mouseout", function(){
                 d3.select(this)
-                .style("fill", "green");
+                .style("fill", getRandomColor());
                 
             });
             points = modifyHorizontalCoord(points, h_space_between);
