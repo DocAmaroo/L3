@@ -15,7 +15,5 @@ public class Main {
 			System.out.println(it.next());
 			Thread.sleep(1000);
 		}
-		
-		it.remove();
 	}
 }
