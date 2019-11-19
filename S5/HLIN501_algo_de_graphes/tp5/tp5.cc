@@ -6,7 +6,7 @@ using namespace std;
 
 const int N=41; //5
 const int INF=9999;                      //La valeur infinie.    
-
+const int tailleArc = 6;
 void floydWarshall(int longueur[][N],int dist[][N],int chemin[][N]){
 
   for (int i=0; i < N; i++){
@@ -60,23 +60,70 @@ void affichage(int dist[][N],int chemin[][N]){
 
 void itineraire(int i, int j, int chemin[][N], char villes[][20]){
   cout << "\n___ITINERAIRE___" << endl;
-  cout << "Départ : " << i << endl;
-  cout << "Arrivé : " << j << endl;
+  cout << "Départ : " << villes[i] << endl;
+  cout << "Arrivé : " << villes[j] << endl;
   cout << "L'itinéraire est : " << villes[i] << " ";
   int k = i;
   while( k != j ){
     k = chemin[k][j];
-    cout << villes[i] << " ";
+    cout << villes[k] << " ";
   }
   cout << endl;
 }
 
 int findVille(char in[20], char villes[][20]){
-  for (int i=0; i < N; i++){
-    if ( strcmp(in, villes[i]) ){
-      return i;
+  int i = 0;
+  while( strcmp(in, villes[i]) && i < N ){ i++;}
+  if ( i >= N ){
+    return -1;
+  }
+  return i;
+}
+
+void fermetureTransitive(int arc[][tailleArc], int fermeture[][tailleArc]){
+  for ( int i=0; i < tailleArc; i++ ){
+    for( int j=0; j < tailleArc; j++ ){
+      fermeture[i][j] = arc[i][j];
     }
   }
+
+  for (int k=0; k < tailleArc; k++){
+    for (int i=0; i < tailleArc; i++){
+      for (int j=0; j < tailleArc; j++){
+        if ( fermeture[i][k] && fermeture[k][j] ){
+          fermeture[i][j] = 1;
+        }  
+      }
+    }
+  }
+}
+
+void printFermeture(int fermeture[][tailleArc]){
+	cout << "\n___FERMETURE TRANSITIVE___" << endl;
+
+	for(int i = 0 ; i < tailleArc ; i++){
+		cout << "{";
+		for(int j = 0 ; j < tailleArc ; j++){
+			cout << fermeture[i][j] << " ";
+		}
+		cout << "\b}" << endl;
+	}
+}
+
+void compFortConnexe(int n, int fermeture[][tailleArc]){
+  cout << "Les composantes fortement connexes sont : ";
+  for (int i = 0; i < n; i++)
+  {
+    // On regarde si le sommet est une source
+    if ( fermeture[i][i] == 0 ){
+      cout << "{" << i << "} ";   
+    }
+    else{
+
+    }
+  }
+
+  cout << endl;
 }
 
 int main(){
@@ -96,20 +143,39 @@ int main(){
   int dist[N][N]; //Le tableau des distances.
   int chemin[N][N]; //Le tableau de la premiere etape du chemin de i a j.
   floydWarshall(longueur,dist,chemin);
-  affichage(dist,chemin);
+  //affichage(dist,chemin);
 
-  char depart[20], destination[20];
-  int i_depart, j_destination;
+  /**
+   * @brief Affichage de l'itinéraire entre deux villes donnée
+   * 
+   */
+  // char depart[20], destination[20];
+  // int _depart, _destination; 
   
-  cout << "Entrez la ville de départ : ";
-  cin >> depart;
-  i_depart = findVille(depart, villes);
+  // cout << "Entrez la ville de départ : ";
+  // cin >> depart;
+  // _depart = findVille(depart, villes);
+  // if ( _depart == -1 ){ cout << "Cette ville n'existe pas" << endl; exit(0); }
 
-  cout << "Entrez la ville de destination : ";
-  cin >> destination;
-  j_destination = findVille(destination, villes);
+  // cout << "Entrez la ville de destination : ";
+  // cin >> destination;
+  // _destination = findVille(destination, villes);
+  // if ( _destination == -1 ){ cout << "Cette ville n'existe pas" << endl; exit(0); }
 
-  itineraire(i_depart, j_destination, chemin, villes);
+  // itineraire(_depart, _destination, chemin, villes);
 
+
+  int arc[tailleArc][tailleArc]={
+    {0,0,0,1,0,1},
+    {1,0,1,1,0,0},
+    {0,0,0,1,0,0},
+    {0,0,0,0,1,1},
+    {0,0,1,0,0,1},
+    {0,0,1,0,0,0}};
+  int fermeture[tailleArc][tailleArc];
+
+  fermetureTransitive(arc, fermeture);
+  printFermeture(fermeture);
+  compFortConnexe(tailleArc, fermeture);
   return EXIT_SUCCESS;
 }
