@@ -1,6 +1,7 @@
 /*
 Remaque : sans enregistrement et sans contraintes les lignes suivantes sont suffisantes : 
 */
+DROP TABLE AB_NB; 
 DROP TABLE EMPRUNT; 
 DROP TABLE CARACTERISE; 
 DROP TABLE MOT_CLEF; 
@@ -104,3 +105,11 @@ CREATE TABLE ECRIT (
 );
 
 prompt -- ECRIT créé;
+
+CREATE TABLE AB_NB(
+	NUMERO NUMERIC(6,0),
+	NB NUMERIC(3),
+	CONSTRAINT FK_AB_NB FOREIGN KEY (NUMERO) REFERENCES ABONNE(NUM_AB)
+);
+
+prompt -- AB_NB créé;
