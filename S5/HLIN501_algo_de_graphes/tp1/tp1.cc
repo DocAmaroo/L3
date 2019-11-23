@@ -45,28 +45,29 @@ void grapheRandomv2(int n, int m, int edgy[][2]){
 void composantes(int n, int m, int edgy[][2], int comp[]){
   int compi=0;
   int compj=0;
+
+  // Initialisation
   for(int i=0;i<n;i++) {
     comp[i]=i;
   }
 
+  // on parcours les arêtes 
   for(int j=0;j<m;j++){
-    compi=comp[edgy[j][0]];
+    compi=comp[edgy[j][0]]; // on récupère un couple d'arête
     compj=comp[edgy[j][1]];
     if(compi!=compj){
-      
-      if(compi<=compj){
-        
-      	for(int k=0;k<n;k++){
-      	  if(comp[k]==compi){
+      if(compi<=compj){ // on met dans comp la plus petite valeur des deux composantes
+        for(int k=0;k<n;k++){
+          if(comp[k]==compi){
             comp[k]=compj;
           }
         }
       }
       
       else{
-      	for(int k=0;k<n;k++){
-      	  if(comp[k]==compj){
-      	    comp[k]=compi;
+        for(int k=0;k<n;k++){
+          if(comp[k]==compj){
+            comp[k]=compi;
           }
         }
       }
@@ -85,10 +86,10 @@ void composantes2(int n, int m, int edgy[][2], int comp[]){
   // on crée un vecteur de vecteur
   vector<vector<int>> sommets(n);
 
+  //Initialisation
   for(int i=0;i<n;i++) {
     comp[i]=i;
 
-    // [1, 2, .... i ]
     vector<int> v;
     v.push_back(i);
     sommets[i] = v;

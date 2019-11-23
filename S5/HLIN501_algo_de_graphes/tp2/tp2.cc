@@ -83,12 +83,9 @@ void tri(int m, int edge[][3]){
   printEdge(m, edge);
 }
 
-void kruska(int n, int m, int edge[][3], int arbre[][2]){
+void kruskal(int n, int m, int edge[][3], int arbre[][2]){
   
-  int comp[n];
-  int compi=0;
-  int compj=0;
-  int cpt=0;
+  int comp[n], compi=0, compj=0, cpt=0;
 
   for(int i=0;i<n;i++) {
     comp[i]=i;
@@ -133,7 +130,7 @@ int main()
   pointRandom(n, point);
   distances(n, m, point, edge);
   tri(m, edge);
-  kruska(n, m, edge, arbre);
+  kruskal(n, m, edge, arbre);
   affichageGraphique(n, point, arbre);
   return EXIT_SUCCESS;
 }

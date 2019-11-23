@@ -9,8 +9,6 @@ using namespace std;
 
 /**
  * @brief Affiche tout les éléments d'un vecteur
- * 
- * @param v 
  */
 void affichageVector( vector<int> v ){
   int i=0;
@@ -24,9 +22,6 @@ void affichageVector( vector<int> v ){
 
 /**
  * @brief Affiche tout les éléments de chaque vecteur
- * 
- * @param n 
- * @param v 
  */
 void affichageAllVector(int n, vector<int> v[] ){
   cout << "\n## AFFICHAGE DES VOISINS" << endl;
@@ -39,11 +34,6 @@ void affichageAllVector(int n, vector<int> v[] ){
 
 /**
  * @brief Affichage de parcoursLargeur()
- * 
- * @param voisin 
- * @param ordre 
- * @param pere 
- * @param niveau 
  */
 void affichePL(int voisin, int ordre, int pere, int niveau){
   (voisin == -1)? cout << "RACINE : 0" : cout << "VOISIN : "<< voisin << " - PERE : "<< pere;
@@ -53,53 +43,34 @@ void affichePL(int voisin, int ordre, int pere, int niveau){
 
 /**
  * @brief Affichage de parcoursProfondeur()
- * 
- * @param voisin 
- * @param ordre 
- * @param pere 
- * @param niveau 
  */
-void affichePP(int voisin, int ordre, int pere, int niveau){
+void affichePP(int voisin, int debut, int fin, int pere){
   (voisin == -1)? cout << "RACINE : 0" : cout << "VOISIN : "<< voisin << " - PERE : "<< pere;
-  cout << " - NIVEAU : "<< niveau;
-  cout << " - ORDRE : "<< ordre << endl;
+  cout << " - DEBUT : "<< debut;
+  cout << " - FIN : "<< fin << endl;
 }
 
 /**
  * @brief Affiche le nombre de sommet à chaque niveau
- * 
- * @param n 
- * @param niveau 
  */
 void afficheNiveau(int n, int niveau[]){
   cout << "\n## AFFICHAGE DES NIVEAUX " << endl;
 
-  /**
-   * @brief Compteur du nombre de composante n'appartenant pas à la racine
-   * 
-   */
+  //Compteur du nombre de composante n'appartenant pas à la racine
   int nbNotIn = 0;
 
-  /**
-   * @brief On crée un tableau permettant de savoir combien il y a de composante à chaque niveau
-   * 
-   */
+  //On crée un tableau permettant de savoir combien il y a de composante à chaque niveau
   int nbNiv[n]; for(int i=0; i < n; i++){ nbNiv[i] = 0; }
 
-  /**
-   * @brief Si niveau[i] == -1 => N'est pas dans la composante
-   * Sinon on incrémente car on a trouvé un sommet en plus
-   */
+  // Si niveau[i] == -1 => N'est pas dans la composante
+  // Sinon on incrémente car on a trouvé un sommet en plus
   for( int i=0; i < n; i++){
     if ( niveau[i] == -1 ){ nbNotIn++; }
     else{ nbNiv[niveau[i]]++; }
   }
 
-  /**
-   * @brief Affichage des résultats
-   * i=1 pour ne pas traiter le niveau 0 qui est la racine
-   * 
-   */
+  // Affichage des résultats
+  // i=1 pour ne pas traiter le niveau 0 qui est la racine
   for( int i=1; i < n; i++){
     if ( nbNiv[i] != 0 ){ cout << "Il y a " << nbNiv[i] << " sommet(s) au niveau " << i << endl; }
   }
@@ -108,9 +79,6 @@ void afficheNiveau(int n, int niveau[]){
 
 /**
  * @brief On crée les voisins de chaque sommet
- * 
- * @param n 
- * @param m 
  */
 void voisinRandom(int n, int m, vector<int>voisins[]){
 
@@ -154,19 +122,10 @@ void voisinRandom(int n, int m, vector<int>voisins[]){
 
 /**
  * @brief On parcours l'arbre dans le sens de la largeur
- * 
- * @param n 
- * @param voisins 
- * @param niveau 
- * @param ordre 
- * @param pere 
  */
 void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], int pere[]){
 
-  /**
-   * @brief On initialise dv
-   * 
-   */
+  // On initialise dv
   int* dv = new int[n];
   for(int i = 0 ; i < n ; i++){
     dv[i] = 0;
@@ -175,35 +134,21 @@ void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], in
     niveau[i] = -1;
   }
 
-  /**
-   * @brief Choix de la racine (ici 0)
-   * 
-   */
+  // Choix de la racine (ici 0)
   int racine = 0;
   dv[racine] = 1;
   ordre[racine] = 1;
   pere[racine] = racine;
   niveau[racine] = 0;
-  cout << "\n## PARCOURS EN LARGEUR " << endl;
-  affichePL(-1, ordre[racine], pere[racine], niveau[racine]);
   
-  /**
-   * @brief Compteur pour dire à quel moment on a vu notre élément
-   * 
-   */
+  // Compteur pour dire à quel moment on a vu notre élément
   int t = 2;
 
-  /**
-   * @brief on crée une file, puis on lui rajoute la racine
-   * 
-   */
+  // On crée une file, puis on lui rajoute la racine
   queue<int> AT;
   AT.push(racine);
 
-  /**
-   * @brief Tant que la file n'est pas vide
-   * 
-   */
+  // Tant que la file n'est pas vide
   while( !AT.empty() ){
     
     int v = AT.front(); // on mémorise l'élement en haut de la file
@@ -222,7 +167,6 @@ void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], in
         t++;
         pere[x] = v;
         niveau[x] = niveau[v] + 1;
-
         affichePL(voisins[v][i], ordre[x], pere[x], niveau[x]);
       }
     }
@@ -232,78 +176,59 @@ void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], in
 
 /**
  * @brief On parcours l'arbre dans le sens de la profondeur
- * 
- * @param n 
- * @param voisins 
- * @param niveau 
- * @param ordre 
- * @param pere 
  */
-void parcoursProfondeur(int n, vector<int> voisins[], int niveau[], int ordre[], int pere[]){
+void parcoursProfondeur(int n, vector<int> voisins[], int debut[], int fin[], int pere[]){
 
-  /**
-   * @brief On initialise dv
-   * 
-   */
+  // On initialise dv
   int* dv = new int[n];
   for(int i = 0 ; i < n ; i++){
     dv[i] = 0;
-    ordre[i] = -1;
     pere[i] = -1;
-    niveau[i] = -1;
+    debut[i] = -1;
+    fin[i] = -1;
   }
 
-  /**
-   * @brief Choix de la racine (ici 0)
-   * 
-   */
+  // Choix de la racine (ici 0)
   int racine = 0;
   dv[racine] = 1;
-  ordre[racine] = 1;
   pere[racine] = racine;
-  niveau[racine] = 0;
-  cout << "\n## PARCOURS EN PROFONDEUR " << endl;
-  affichePL(-1, ordre[racine], pere[racine], niveau[racine]);
-  
-  /**
-   * @brief Compteur pour dire à quel moment on a vu notre élément
-   * 
-   */
+  debut[racine] = 1;
+
+  // Compteur pour dire à quel moment on a vu notre élément
   int t = 2;
 
-  /**
-   * @brief on crée une file, puis on lui rajoute la racine
-   * 
-   */
+  // On crée une file, puis on lui rajoute la racine
   stack<int> AT;
   AT.push(racine);
 
-  /**
-   * @brief Tant que la file n'est pas vide
-   * 
-   */
+  // Tant que la file n'est pas vide
   while( !AT.empty() ){
     
-    int v = AT.top(); // on mémorise l'élement en haut de la file
-    AT.pop(); // on l'enlève
+    int x = AT.top(); // on mémorise l'élement en haut de la file
+    
+    if ( voisins[x].empty()  ){
+      AT.pop(); // on l'enlève
+      fin[x] = t;
+      t++;
+    }
 
-    int size = (int)voisins[v].size();
+    else{
 
-    for( int i=0; i < size ; i++){
+      int y = voisins[x].back();
+      voisins[x].pop_back();
 
-      int x = voisins[v][i];
-
-      if ( dv[x] == 0 ){
-        dv[x] = 1;
-        AT.push(x);
-        ordre[x] = t;
+      if ( dv[y] == 0 ){
+        dv[y] = 1; // on traite y pour la première fois
+        AT.push(y);
+        debut[y] = t;
         t++;
-        pere[x] = v;
-        niveau[x] = niveau[v] + 1;
-
-        affichePP(voisins[v][i], ordre[x], pere[x], niveau[x]);
+        pere[y] = x;
       }
     }
+  }
+
+  for( int i=0; i < n ; i++){
+    affichePP(i,  debut[i], fin[i], pere[i]);
   }
 
   delete[] dv;
@@ -323,10 +248,13 @@ int main() {
 
   voisinRandom(n, m, voisins);
   affichageAllVector(n, voisins);
+
+  cout << "\n## PARCOURS EN LARGEUR " << endl;
   parcoursLargeur(n, voisins, niveau, ordre, pere);
   afficheNiveau(n, niveau);
+
+  cout << "\n## PARCOURS EN PROFONDEUR " << endl;
   parcoursProfondeur(n, voisins, niveau, ordre, pere);
-  afficheNiveau(n, niveau);
 
   return EXIT_SUCCESS;
 }
