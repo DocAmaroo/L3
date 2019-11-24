@@ -111,19 +111,36 @@ void printFermeture(int fermeture[][tailleArc]){
 }
 
 void compFortConnexe(int n, int fermeture[][tailleArc]){
-  cout << "Les composantes fortement connexes sont : ";
-  for (int i = 0; i < n; i++)
-  {
-    // On regarde si le sommet est une source
-    if ( fermeture[i][i] == 0 ){
-      cout << "{" << i << "} ";   
+    vector<int> comp[n];
+    for (int i = 0; i < n; i++)
+    {
+      for (int j = 0; j < n; j++)
+      {
+          if ((fermeture[i][j] == 1) && (fermeture[j][i] == 1))
+          {
+              comp[i].push_back(j);
+          }
+      }
     }
-    else{
+    cout<<"Les composantes fortements connexes sont :";
+    for (int i = 0; i < n; i++)
+    {
+        // On regarde si le sommet est une source
+        if ( fermeture[i][i] == 0 ){
+          cout << "{" << i << "} ";   
+        }
 
+        if (!comp[i].empty() && (comp[i][0] >= i))
+        {
+            cout<<"{ ";
+            for (int j = 0; j < comp[i].size(); j++)
+            {
+                cout << comp[i][j] << " ";
+            }
+            cout<<"}";
+        }
     }
-  }
-
-  cout << endl;
+    cout << endl;
 }
 
 int main(){
