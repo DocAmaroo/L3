@@ -122,6 +122,7 @@ void voisinRandom(int n, int m, vector<int>voisins[]){
 
 /**
  * @brief On parcours l'arbre dans le sens de la largeur
+ * O(n+m)
  */
 void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], int pere[]){
 
@@ -176,6 +177,7 @@ void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], in
 
 /**
  * @brief On parcours l'arbre dans le sens de la profondeur
+ * O(n+m)
  */
 void parcoursProfondeur(int n, vector<int> voisins[], int debut[], int fin[], int pere[]){
 

@@ -83,6 +83,7 @@ void tri(int m, int edge[][3]){
   printEdge(m, edge);
 }
 
+// O(n*m)
 void kruskal(int n, int m, int edge[][3], int arbre[][2]){
   
   int comp[n], compi=0, compj=0, cpt=0;
@@ -115,6 +116,42 @@ void kruskal(int n, int m, int edge[][3], int arbre[][2]){
   }
 }
 
+// O(n+m)
+void kruskalOpti(int n, int m, int edge[][3], int arbre[][2]){
+  int comp[n];
+  int k=0;
+  vector<vector <int>> vect(n);
+
+  for (int i = 0; i < n; i++) {
+    comp[i] = i;
+    vect[i].push_back(i);
+  }
+
+  for (int i = 0; i < m; i++) {
+    int x = edge[i][0];
+    int y = edge[i][1];
+    if(comp[x] != comp[y]) {
+
+      // AJOUTER POUR KRUSTAL
+      arbre[k][0] = x;
+      arbre[k][1] = y;
+      k++;
+      // FIN AJOUT
+
+      if(vect[comp[x]].size() > vect[comp[y]].size())
+        swap(x, y);
+
+      int aux = comp[x];
+      while(!vect[aux].empty()){ // boucle tant que vect[aux] n'est pas vide
+          int z = vect[aux].back(); // retourne la valeur en haut de vect[aux]
+            comp[z] = comp[y];
+              vect[comp[y]].push_back(z); // ajoute z au dessus de comp[y]
+              vect[aux].pop_back(); // depile vect[aux]
+      }
+    }
+  }
+}
+
 void affichageGraphique(int n, coord point[], int arbre[][2]);
 
 int main()
@@ -130,7 +167,8 @@ int main()
   pointRandom(n, point);
   distances(n, m, point, edge);
   tri(m, edge);
-  kruskal(n, m, edge, arbre);
+  //kruskal(n, m, edge, arbre);
+  kruskalOpti(n, m, edge, arbre);
   affichageGraphique(n, point, arbre);
   return EXIT_SUCCESS;
 }

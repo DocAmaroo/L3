@@ -42,6 +42,7 @@ void grapheRandomv2(int n, int m, int edgy[][2]){
   }  
 }
 
+// O(n*m)
 void composantes(int n, int m, int edgy[][2], int comp[]){
   int compi=0;
   int compj=0;
