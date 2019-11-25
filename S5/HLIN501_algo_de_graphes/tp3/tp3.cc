@@ -122,7 +122,14 @@ void voisinRandom(int n, int m, vector<int>voisins[]){
 
 /**
  * @brief On parcours l'arbre dans le sens de la largeur
- * O(n+m)
+ * 
+ * @param n 
+ * @param voisins 
+ * @param niveau 
+ * @param ordre 
+ * @param pere 
+ * 
+ * Complexité : O(n+m)
  */
 void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], int pere[]){
 
@@ -157,13 +164,13 @@ void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], in
 
     int size = (int)voisins[v].size();
 
-    for( int i=0; i < size ; i++){
+    for( int i=0; i < size ; i++){ // on parcours tout les voisins de v
 
       int x = voisins[v][i];
 
-      if ( dv[x] == 0 ){
+      if ( dv[x] == 0 ){ // si le sommet x n'a pas encore été vu
         dv[x] = 1;
-        AT.push(x);
+        AT.push(x); // on l'ajoute dans la file
         ordre[x] = t;
         t++;
         pere[x] = v;
@@ -177,7 +184,14 @@ void parcoursLargeur(int n, vector<int> voisins[], int niveau[], int ordre[], in
 
 /**
  * @brief On parcours l'arbre dans le sens de la profondeur
- * O(n+m)
+ * 
+ * @param n 
+ * @param voisins 
+ * @param niveau 
+ * @param ordre 
+ * @param pere 
+ * 
+ * Complexité : O(n+m)
  */
 void parcoursProfondeur(int n, vector<int> voisins[], int debut[], int fin[], int pere[]){
 
@@ -208,7 +222,7 @@ void parcoursProfondeur(int n, vector<int> voisins[], int debut[], int fin[], in
     
     int x = AT.top(); // on mémorise l'élement en haut de la file
     
-    if ( voisins[x].empty()  ){
+    if ( voisins[x].empty() ){
       AT.pop(); // on l'enlève
       fin[x] = t;
       t++;
@@ -216,11 +230,11 @@ void parcoursProfondeur(int n, vector<int> voisins[], int debut[], int fin[], in
 
     else{
 
-      int y = voisins[x].back();
-      voisins[x].pop_back();
+      int y = voisins[x].back(); // on récup la valeur en haut du vecteur
+      voisins[x].pop_back(); // on le depile
 
-      if ( dv[y] == 0 ){
-        dv[y] = 1; // on traite y pour la première fois
+      if ( dv[y] == 0 ){ // on traite y pour la première fois
+        dv[y] = 1; 
         AT.push(y);
         debut[y] = t;
         t++;

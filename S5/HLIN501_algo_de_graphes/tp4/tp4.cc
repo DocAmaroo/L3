@@ -82,6 +82,12 @@ void affichageAllVector(int n, vector<int> v[] ){
   }
 }
 
+/**
+ * @brief On remplis les arêtes grâce au voisin
+ * 
+ * @param n 
+ * @param arete 
+ */
 void voisins2arete(int n,vector<int>voisin[],int arete[][2]){
   int cpt = 0;
   for ( int i=0; i < n; i++ ){
@@ -104,6 +110,16 @@ void affichageArete(int m, int arete[][2] ){
 
 void affichageGraphique(int n, int m, coord point[], int arete[][2], string name);
 
+/**
+ * @brief Vérifie si il existe un raccourci
+ * 
+ * @param n 
+ * @param dis 
+ * @param traite 
+ * @param x 
+ * @return true 
+ * @return false 
+ */
 bool existe(int n,int dis[],bool traite[],int &x){
   int min = 100001;
   bool res = false;
@@ -128,10 +144,10 @@ void afficheDijkstra(int n, int d[], int pere[]){
 }
 
 void dijkstra(int n,vector<int> voisin[],coord point[],int pere[]){
-  int d[n];
+  int d[n], x;
   bool traite[n];
-  int x;
 
+  //initialisation
   for( int i=0; i < n; i++ ){
     d[i] = 100000; //rep +inf
     traite[i] = false; 
@@ -146,7 +162,7 @@ void dijkstra(int n,vector<int> voisin[],coord point[],int pere[]){
     for(int i = 0; i < voisin[x].size() ; i++){
       int y = voisin[x][i];
       if(traite[y] == 0 && d[y] > d[x] + distance(point[x],point[y])){
-        d[y] = d[x] + distance(point[x],point[y]);
+        d[y] = d[x] + distance(point[x],point[y]); // x raccourci
         pere[y] = x;
       }
     }
@@ -154,6 +170,14 @@ void dijkstra(int n,vector<int> voisin[],coord point[],int pere[]){
   afficheDijkstra(n, d, pere);
 }
 
+/**
+ * @brief Construit l'arbre
+ * 
+ * @param n 
+ * @param arbre 
+ * @param pere 
+ * @return int 
+ */
 int construireArbre(int n, int arbre[][2], int pere[]){
   int k = 0;
   for(int i = 0; i < n; i++){

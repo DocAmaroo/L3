@@ -5,6 +5,13 @@
 
 using namespace std;
 
+/**
+ * @brief Crée un graphe random avec n sommets et m arêtes 
+ * 
+ * @param n -> nb sommets
+ * @param m -> nb d'arête
+ * @param edgy -> les arêtes
+ */
 void grapheRandomv1(int n, int m, int edgy[][2]){
   srand(time(NULL));
   for(int i=0;i<m;i++){
@@ -14,13 +21,32 @@ void grapheRandomv1(int n, int m, int edgy[][2]){
   }  
 }
 
+/**
+ * @brief Renvoi vrai si il existe une arête entre i et j
+ * 
+ * @param i 
+ * @param j 
+ * @param m 
+ * @param edgy 
+ * @return res
+ */
 bool dejaArete(int i, int j, int m, int edgy[][2]){
-  for(int k=0;k<m;k++)
-    if(i==edgy[k][0] && j==edgy[k][1])
-      return true;
-  return false;
+  bool res = false;
+  for(int k=0;k<m;k++){
+    if(i==edgy[k][0] && j==edgy[k][1]){
+      res = true;
+    }
+  }
+  return res;
 }
 
+/**
+ * @brief Crée un graphe random à n sommets et m arête et évite les doublons d'arête
+ * 
+ * @param n -> nb sommets
+ * @param m -> nb d'arête
+ * @param edgy -> les arêtes
+ */
 void grapheRandomv2(int n, int m, int edgy[][2]){
   int i=0;
   int j=0;
@@ -42,44 +68,74 @@ void grapheRandomv2(int n, int m, int edgy[][2]){
   }  
 }
 
-// O(n*m)
+/**
+ * @brief Permet de remplir le tableau comp[] 
+ * Vérifiant que comp[i] == comp[j] si il existe un chemin de x à y
+ * Autrement dit : x et y appartiennent à la même compo connexe
+ * 
+ * @param n -> nb sommets
+ * @param m -> nb d'arête
+ * @param edgy -> les arêtes
+ * @param comp -> les composantes
+ * 
+ * Complexité : O(n*m)
+ */
+
 void composantes(int n, int m, int edgy[][2], int comp[]){
   int compi=0;
   int compj=0;
 
   // Initialisation
-  for(int i=0;i<n;i++) {
-    comp[i]=i;
-  }
+  for(int i=0;i<n;i++) { comp[i]=i; }
 
   // on parcours les arêtes 
   for(int j=0;j<m;j++){
-    compi=comp[edgy[j][0]]; // on récupère un couple d'arête
+
+    // on récupère un couple d'arête
+    compi=comp[edgy[j][0]];
     compj=comp[edgy[j][1]];
+    
     if(compi!=compj){
-      if(compi<=compj){ // on met dans comp la plus petite valeur des deux composantes
-        for(int k=0;k<n;k++){
-          if(comp[k]==compi){
-            comp[k]=compj;
-          }
-        }
-      }
-      
-      else{
+
+      // on met dans comp[k] la plus petite valeur des deux composantes
+      if(compi<=compj){ 
         for(int k=0;k<n;k++){
           if(comp[k]==compj){
             comp[k]=compi;
           }
         }
       }
+      
+      else{
+        for(int k=0;k<n;k++){
+          if(comp[k]==compi){
+            comp[k]=compj;
+          }
+        }
+      }
     }
   }
+
+  // affichage du tableau comp[]
   for(int l=0;l<n;l++){
     cout<<"comp("<<l<<")="<<comp[l]<<endl;
   }
 }
 
+/**
+ * @brief Permet de remplir le tableau comp[] 
+ * Vérifiant que comp[i] == comp[j] si il existe un chemin de x à y
+ * Autrement dit : x et y appartiennent à la même compo connexe
+ * 
+ * @param n -> nb sommets
+ * @param m -> nb d'arête
+ * @param edgy -> les arêtes
+ * @param comp -> les composantes
+ * 
+ * Complexité : O(n*m?)
+ */
 void composantes2(int n, int m, int edgy[][2], int comp[]){
+  
   int compi=0;
   int compj=0;
   int tailleMin = 0;
@@ -100,17 +156,17 @@ void composantes2(int n, int m, int edgy[][2], int comp[]){
   // on parcours les arêtes 
   for(int i = 0; i < m; i++){
 
-    int x = edgy[i][0]; int y = edgy[i][1];
+    int x = edgy[i][0], y = edgy[i][1];
 
     if(comp[x] != comp[y]){
       
-      // Si le nombre de composante x > Nombre de composantes y ont les échanges
-      if(sommets[comp[x]].size() > sommets[comp[y]].size())
-        swap(x, y);
+      // Si nb_comp(x) > nb_comp(y) => ont les échanges
+      if(sommets[comp[x]].size() > sommets[comp[y]].size()){ swap(x, y); }
 
       int aux = comp[x];
 
-      // tant que la pile de sommet de aux n'est pas vide on récupère la valeur du haut de la pile et on dépile
+      // Tant que la pile de sommet n'est pas vide 
+      // on récupère la valeur du haut de la pile et on dépile
       while(!sommets[aux].empty()){
         int z = sommets[aux].back();
         comp[z] = comp[y];
@@ -125,19 +181,25 @@ void composantes2(int n, int m, int edgy[][2], int comp[]){
   }
 }
 
-
+/**
+ * @brief Affichage des points isolés et du nb_comp à x sommets
+ * 
+ * @param n 
+ * @param m 
+ * @param comp 
+ */
 void ecritureTailles(int n, int m, int comp[]){
+  cout << " ____ TAILLE ____ " << endl;
   int taille[n], nb[n+1];
   nb[n]=0;
-  for(int i=0;i<n;i++){
-    taille[i]=0;
-    nb[i]=0;
-  }
-  for(int j=0;j<n;j++)
-    taille[comp[j]]++;
-  for(int k=0;k<n;k++)
-    nb[taille[k]]++;
+
+  // initialisation (pas forcément necessaire)
+  for(int i=0;i<n;i++){ taille[i]=0; nb[i]=0; }
+  for(int j=0;j<n;j++){ taille[comp[j]]++; }
+  for(int k=0;k<n;k++){ nb[taille[k]]++; }
+
   cout<<"Il y a "<<nb[1]<<" points isoles."<<endl;
+  
   for(int l=2;l<n+1;l++)
     if(nb[l]!=0)
       cout<<"Il y a "<<nb[l]<<" composantes de taille "<<l<<"."<<endl;
@@ -153,9 +215,14 @@ int main(){
   int edgy[m][2];    // Tableau des aretes.
   int comp[n];       // comp[i] est le numero de la composante contenant i.
 
+  cout << "__ GRAPHE __ " << endl;
   grapheRandomv2(n,m,edgy);
-  //composantes(n,m,edgy,comp);
+
+  cout << "\n__ COMPOSANTE __ " << endl;
+  composantes(n,m,edgy,comp);
   ecritureTailles(n,m,comp);
+
+  cout << "\n__ COMPOSANTE V2 __ " << endl;
   composantes2(n,m,edgy,comp);
   ecritureTailles(n,m,comp);
 
