@@ -190,7 +190,7 @@ int construireArbre(int n, int arbre[][2], int pere[]){
 
 int main(){
   int n;                           // Le nombre de points.
-  cout << "Entrer le nombre de points: ";
+  cout << "Entrer le nombre de points (bcp par préférence ~800) : ";
   cin >> n; 
   int dmax=50;                     // La distance jusqu'a laquelle on relie deux points.
   coord point[N];                  // Les coordonnees des points.
