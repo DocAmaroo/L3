@@ -11,6 +11,7 @@ class CompteDepot : public virtual CompteBancaire{
     public :
         CompteDepot(double solde=1000, double frais=100);
         virtual ~CompteDepot();
+        virtual void depose(double);
 };
 
 #endif

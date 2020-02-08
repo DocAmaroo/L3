@@ -17,6 +17,7 @@ void CompteBancaire::setSolde(double new_solde){
     solde = new_solde;
 }
 
-void CompteBancaire::depose(double depot){
-    setSolde( depot + getSolde()); 
+void CompteBancaire::depose(double somme){
+    cout << "CB : depose " << somme << endl;
+    setSolde( somme + getSolde()); 
 }

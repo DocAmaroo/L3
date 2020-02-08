@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Wall -pedantic -ansi
-SOURCE = main.cpp CompteBancaire.cpp CompteRemunere.cpp CompteDepot.cpp CompteRemunereAvecCarteCredit.cpp
+SOURCE = main.cpp CompteBancaire.cpp CompteRemunere.cpp CompteDepot.cpp 
 OBJ = $(SOURCE:%.cpp=%.o)
 EXE = run
 

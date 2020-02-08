@@ -10,6 +10,7 @@ class CompteRemunere : public virtual CompteBancaire{
     public :
         CompteRemunere(double solde=1000, double bonus=0.10);
         virtual ~CompteRemunere();
+        virtual void depose(double);
 };
 
 #endif
