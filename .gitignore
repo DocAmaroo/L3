@@ -24,10 +24,14 @@
 ehthumbs.db
 Thumbs.db
 
-# Backup de logiciels texte #
+# Backup text software #
 #############################
 *.~
 
 # Eclipse metadata #
 ####################
 *.metadata
+
+# Unwanted folder #
+###################
+S5/
