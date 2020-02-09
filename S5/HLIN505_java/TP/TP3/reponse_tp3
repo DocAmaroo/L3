@@ -1,0 +1,88 @@
+Exercice 1 :
+
+# Question 1 : 
+~ RuntimeException n'a pas de besoin de try et catch pour être traité il le fait dans tout les cas (comme Error)
+~ IOException renvoie du coup une erreur car on doit définir une catch pour créer une exception :
+
+# Question 2 : 
+	Solution possible : public void f2() throws IOException{ throw new Exc2();}
+
+~ Si l'exception e est une instance de Exc3 :
+	debut  \_f3
+	debut \_f4
+	debut\_f5
+	finally\_f4
+	finally\_f3
+	RUNTIME EXCEPTION ERROR !!
+
+~ Si l'exception e est une instance de Exc31 :
+	debut\_f3
+	debut\_f4
+	debut\_f5
+	finally\_f4
+	Exc31
+	finally\_f3
+	suite\_f3
+
+~ Si l'exception e est une instance de Exc311 :
+	debut\_f3
+	debut\_f4
+	debut\_f5
+	finally\_f4
+	Exc311
+	finally\_f3
+	suite\_f3
+
+~ Si l'exception e est une instance de Exc32 :
+	debut\_f3
+	debut\_f4
+	debut\_f5
+	Exc32
+	finally\_f4
+	suite\_f4
+	finally\_f3
+	suite\_f3
+
+~ Si l'exception e est une instance de Exc321 :
+	debut\_f3
+	debut\_f4
+	debut\_f5
+	Exc321
+	finally\_f4
+	suite\_f4
+	finally\_f3
+	suite\_f3
+
+# Question 3
+	
+~ si TAILLE_MAX = 0 :
+	"Le main pense que la pile est pleine";
+	"sortie du main";
+
+~ si TAILLE_MAX = 1 :
+	sortie de empiler;
+	"le main pense que la pile est pleine";
+	"sortie du main";
+
+~ si TAILLE_MAX = 2 :
+	sortie de empiler
+	sortie de empiler
+	sortie de sommet
+	4
+	sortie de depiler
+	sortie de sommet
+	2
+	"le depilerTout est passe par la"
+	"sortie du depilerTout"
+	"sortie du main";
+
+Voici comment modifier depilerTout pour éviter l'utilisation abusive des exceptions :
+
+public void depilerTout(){
+	if (pileVide()) throw new pilevideException();
+	while(!pileVide()){
+		System.out.println(sommet());
+		depiler();
+	}
+	System.out.println("sortie de depilerTout");
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>  
+    <meta charset="UTF-8">
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="./jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="./jquery-ui-1.12.1/jquery-ui.min.css"></link>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.0.1/build/ol.js"></script>    
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.0.1/css/ol.css"/>
+    <style>
+      .points_interet, .map { width: 100%; height: 500px; }
+      .marker { display: none; }
+    </style>
+
+  </head>
+  <body>
+    <center> <h7> Essai OpenLayers avec OSM et JQUERY ! </h7> </center>
+    <div id="points_interet" class="points_interet" style="width:100%; height:25%">
+        <div id="accordion"></div>
+    </div>
+    <br/>
+    <div id="map" class="map" style="width:100%; height:500px"></div>
+    <img id="markerProto" class="marker" src="marker.png" width="50" height="50" onclick="switchMarker(this.id)"/>
+    <div id="popupProto" style="display:none; font-size:18pt; color:black; width:100px; height:auto;"></div>
+    <script src="OL_OSM.js"></script>    
+  </body>
+</html>
