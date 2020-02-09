@@ -5,7 +5,7 @@ using namespace std;
 
 // Bank Account
 BankAccount::BankAccount() : balance(1000) {}
-BankAccount::~BankAccount(){ cout << getBalance() << endl; }
+BankAccount::~BankAccount(){}
 
 double BankAccount::getBalance(){ return balance; }
 void BankAccount::setBalance(double sum){ balance = sum; }
