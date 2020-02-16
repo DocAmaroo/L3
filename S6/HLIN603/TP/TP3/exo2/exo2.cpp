@@ -35,27 +35,3 @@ int main(int argc, const char** argv){
     
     return 0;
 }
-
-// CasierBouteille::CasierBouteille(){
-//     for (int i=0; i<6; i++){
-//         cases[i]=NULL;
-//     }
-// }
-
-// CasierBouteille::~CasierBouteille(){}
-
-// void CasierBouteille::range(Bouteille* bouteille, int numeroCase){
-//     cases[numeroCase]=bouteille;
-// }
-
-// CasierOeuf::CasierOeuf(){ 
-//     for (int i=0; i<6; i++){
-//         cases[i]=NULL;
-//     }
-// }
-
-// CasierOeuf::~CasierOeuf(){}
-
-// void CasierOeuf::range(Oeuf* oeuf, int numeroCase){
-//     cases[numeroCase]=oeuf;
-// }

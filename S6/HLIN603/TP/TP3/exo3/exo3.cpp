@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string.h>
 
-#include "exo2.h"
+#include "exo3.h"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ CasierBouteille::CasierBouteille(){
         cases[i]=NULL;
     }
 }
-
+>=
 CasierBouteille::~CasierBouteille(){}
 
 void CasierBouteille::range(Bouteille* bouteille, int numeroCase){
