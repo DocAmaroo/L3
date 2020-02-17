@@ -14,6 +14,8 @@
 	<li> <a href="https://github.com/DocAmaroo/L3/tree/master/S5/HLIN511_sql"> HLIN511 - Systèmes d'information et Bases de données 2 </a> </li>
 </ul>
 
+---
+
 <ul> 
 	<li> <a href="https://github.com/DocAmaroo/L3/tree/master/S6/HLIN602%20-%20Logique"> HLIN602 - Logique </a> </li>
 	<li> <a href="https://github.com/DocAmaroo/L3/tree/master/S6/HLIN603%20-%20Programmation%20lin%C3%A9aire"> HLIN603 - Programmation linéaire </a> </li>
