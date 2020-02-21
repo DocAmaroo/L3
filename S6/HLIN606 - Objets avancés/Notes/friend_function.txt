@@ -1,0 +1,47 @@
+Declaration :
+-------------
+* Le mot clé friend permet de donner accès 
+aux membres private et protected d'une classe.
+
+* Dans un template, un paramètre peu être déclaré comme friend.
+
+    ex : 
+        template <typename T> class my_class{
+            friend T;
+            //...
+        };
+
+* Les functions précédés du mot clé friend doit avoir été déclaré auparavant
+Si ce n'est pas le cas une erreur est omise.
+
+    ex :
+        class ForwardDeclared;   // Class name is known.
+        class HasFriends{
+            friend int ForwardDeclared::IsAFriend();   // C2039 error expected
+        };
+
+
+* Exemples de bonnes syntaxes :
+
+class M{
+    class friend F;  // Introduces F but doesn't define it
+};
+
+-----
+
+class F {};
+class M {
+    friend F;  // OK
+};
+
+Fonctions :
+-----------
+
+* Une fonction est friend si elle n'appartient pas à une classe mais peut
+accéder à ses attributs private et protected.
+
+* voir friendexample1.cpp
+
+
+Class :
+-------
