@@ -45,3 +45,9 @@ accéder à ses attributs private et protected.
 
 Class :
 -------
+
+* Une fonction dans A et friend dans la classe B ( friend A::function() )
+n'est fonctionnel uniquement que si la fonction dans A est public 
+
+* Pour avoir accès au donné private et protected d'une classe il faut
+déclarer une class dans cette même class en tant que friend (voir friendclass.cpp)
