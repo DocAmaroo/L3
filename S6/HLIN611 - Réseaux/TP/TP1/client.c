@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
   printf("saisir un message à envoyer (moins de 200 caracteres) \n");
   char m[202]; 
   fgets(m, sizeof(m), stdin); // copie dans m la chaîne saisie que
-			      // clavier (incluant les esaces et le
+			      // clavier (incluant les espaces et le
 			      // saut de ligne à la fin).
   m[strlen(m)-1]  = '\0'; // je retire le saut de ligne                                      
 
@@ -85,13 +85,18 @@ int main(int argc, char *argv[]) {
      serveur s'attends à recevoir une chaine de caractères y compris le
      caractère de fin */
   
-  int snd = send(ds, m, 8, 0);
+  int snd = 0;
+
+  if ( strlen(m) > 199 ){
+     snd = send(ds, m, 199, 0);
+  } else {
+     snd = send(ds, m, strlen(m), 0);
+  }
+  
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
   if (snd == -1){
      printf("Client : send n'a pas fonctionné");
   }
-
-
 
   /* Afficher le nombre d'octets EFFECTIVEMENT déposés dans le buffer
      d'envoi de la socket cliente. : /!\ Faire la différence entre le
