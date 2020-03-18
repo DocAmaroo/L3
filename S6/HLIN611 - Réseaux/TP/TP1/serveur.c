@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
      adresse IP et numéro de port de la structure adCv. Attention à
      faire les conversions du format réseau vers le format
      hôte. Utiliser la fonction inet_ntoa(..) pour l'IP.*/
-  int port = htons(server.sin_port);
+  int port = htons(adCv.sin_port);
   printf("Serveur: le client %s:%d\n", inet_ntoa(adCv.sin_addr), port);
   // Je peux tester l'exécution de cette étape avant de passer à la suite.
  
