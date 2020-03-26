@@ -103,20 +103,42 @@ object
   method virtual sub : 'a -> 'a -> 'a
 end;;
 
-(* class virtual ['a] ring =
-object
+class virtual ['a] ring =
+object 
   inherit ['a] add_group
   inherit ['a] mul_monoid
-  method virtual add
-end;; *)
+end;;
 
 
-(* class int_ring =
+class int_ring =
     object (self)
         inherit [int] ring
         method add a b = a + b
-        method mul a b = a * b
         method add_id = 0
+        method mul a b = a * b
         method mul_id = 1
-        method soust a b = a - b
-end;; *)
+        method sub a b = a - b
+end;;
+
+class virtual ['a, 'b] polynome (r : 'b) (p : ('a * int) list) =
+object (self)
+  inherit ['b] ring
+  method virtual eval : 'a -> 'a
+  method virtual puis : 'a -> 'a -> 'a
+end;;
+
+class int_polynomial (p : (int * int) list) = 
+object (self)
+  inherit [int, int] polynome 1 p
+  inherit int_ring
+  method eval x = List.fold_right (self#add) (List.map(fun o -> (self#mul (fst o) (self#puis x (snd o)))) p) 0
+  method puis x n = if (n = 0) then 1 else (self#mul x (self#puis x (n - 1)))
+end;;
+
+(* x^2 - x + 1 *)
+let p = [ (1, 2); (-1, 1); (-1, 0) ];;
+
+let o = new int_polynomial p;;
+
+(* x = 1 *)
+print_int(o#eval 1);;
