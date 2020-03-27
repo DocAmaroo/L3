@@ -45,8 +45,7 @@ int main(int argc, char *argv[]) {
   /* Etape 2 : designer la socket du serveur : avoir une structure qui
      contient l'adresse de cette socket (IP + numéro de port. */
   struct sockaddr_in adrServ;
-  //adrServ.sin_addr.s_addr = INADDR_ANY ;
-  inet_pton(AF_INET, argv[1], &(adrServ.sin_addr));
+  adrServ.sin_addr.s_addr = inet_addr(argv[1]) ;
   adrServ.sin_family = AF_INET;
   adrServ.sin_port = htons(atoi(argv[2]));
   
@@ -85,17 +84,12 @@ int main(int argc, char *argv[]) {
      serveur s'attends à recevoir une chaine de caractères y compris le
      caractère de fin */
   
-  int snd = 0;
-
-  if ( strlen(m) > 199 ){
-     snd = send(ds, m, 199, 0);
-  } else {
-     snd = send(ds, m, strlen(m), 0);
-  }
+  int snd = send(ds, m, strlen(m), 0);
   
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
   if (snd == -1){
-     printf("Client : send n'a pas fonctionné");
+     perror("Client erreur : ");
+     exit(1);
   }
 
   /* Afficher le nombre d'octets EFFECTIVEMENT déposés dans le buffer
@@ -123,8 +117,13 @@ int main(int argc, char *argv[]) {
   int reponse;
   int rcv = recv (ds, &reponse, sizeof(int), 0) ;
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
-  if (rcv == -1){
-     printf("Client : recv n'a pas fonctionné");
+  if(rcv == -1) {
+    perror("Erreur: ");
+    exit(1);
+  }
+  else if(rcv == 0) {
+    printf("Le socket a été fermé.\n");
+    exit(1);
   }
 
   /* Etape 6 : je compare le nombre d'octets déposés (envoyés) avec

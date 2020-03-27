@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
 
   struct sockaddr_in server;
   server.sin_family = AF_INET;
+  server.sin_addr.s_addr = INADDR_ANY;
   server.sin_port = htons(atoi(argv[1]));
   
   if(bind(ds, (struct sockaddr*) &server, sizeof(server)) < 0){
@@ -102,8 +103,7 @@ int main(int argc, char *argv[])
      adresse IP et numéro de port de la structure adCv. Attention à
      faire les conversions du format réseau vers le format
      hôte. Utiliser la fonction inet_ntoa(..) pour l'IP.*/
-  int port = htons(adCv.sin_port);
-  printf("Serveur: le client %s:%d\n", inet_ntoa(adCv.sin_addr), port);
+  printf("Serveur: le client %s:%d\n", inet_ntoa(adCv.sin_addr), ntohs(adCv.sin_port));
   // Je peux tester l'exécution de cette étape avant de passer à la suite.
  
   /* Etape 5 : réception d'un message de type chaîne de caractères */
@@ -112,11 +112,16 @@ int main(int argc, char *argv[])
   /* attendre un message dont la taille maximale est 500 octets. Pour
      cet exercice, il est demandé de ne faire qu'un seul appel à recv
      pour recevoir un message. */
-  int rcv = recv (dsCv, buffer, sizeof(buffer), 0) ;
 
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
-  if (rcv == -1){
-     printf("Serveur : recv n'a pas fonctionné");
+  int rcv = recv(dsCv, buffer, sizeof(buffer), 0) ;
+  if(rcv == -1) {
+      perror("Erreur: ");
+      exit(1);
+  }
+  else if(rcv == 0) {
+      printf("Le socket a été fermé.\n");
+      exit(1);
   }
 
   /* Afficher le nombre d'octets EFFECTIVEMENT reçus. : /!\ Faire la
