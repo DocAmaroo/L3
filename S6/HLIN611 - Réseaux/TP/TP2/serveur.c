@@ -103,29 +103,31 @@
 
 	/* Etape 5 : réception d'un message de type chaîne de caractères */
 
-	char buffer[1500];
-	int rcv = 0, snd = 0;
+	int taille = 0, rcv = 0, snd = 0;
+	char buffer[4000];
+	
+	//on récupère la taille du message
+	rcv = recv(dsCv, &taille, sizeof(taille), 0);
 
-	while(1){
-		
-		rcv = recv(dsCv, buffer, sizeof(buffer), 0);
-		
-		if(rcv == -1) {
-			perror("Erreur: ");
-			exit(1);
-		}
-		else if(rcv == 0) {
-			printf("Le socket a été fermé.\n");
-			exit(1);
-		}
+	//on lit le message
+	rcv = recv(dsCv, buffer, taille, 0);
+	
+	if(rcv == -1) {
+		perror("Erreur: ");
+		exit(1);
+	}
+	else if(rcv == 0) {
+		printf("Le socket a été fermé.\n");
+		exit(1);
+	}
+	
+	buffer[rcv]  = '\0';
+	printf("Serveur : contenu du message : %s \n", buffer);
 
-		printf("Serveur : contenu du message : %s \n", buffer);
+	snd = send(dsCv, &rcv, sizeof(int), 0);
 
-		snd = send(dsCv, &rcv, sizeof(int), 0);
-
-		if (snd == -1){
-			printf("Serveur : send n'a pas fonctionné");
-		}
+	if (snd == -1){
+		printf("Serveur : send n'a pas fonctionné");
 	}
 
 		
