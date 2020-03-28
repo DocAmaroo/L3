@@ -16,4 +16,5 @@
     ```bash
     ./client [IP ADRESS] [PORT NUMBER]
     #[IP ADRESS] sera l'adresse récupéré à l'étape 3
+    #[PORT NUMBER] le numéro de port ( > 1023 )
     ```
