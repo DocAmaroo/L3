@@ -73,7 +73,7 @@
 
 	printf("saisir un message à envoyer (moins de 200 caracteres) \n");
 	
-	char m[1500]; 
+	char m[1500];
 	fgets(m, sizeof(m), stdin);
 	m[strlen(m)-1]  = '\0';
 
