@@ -70,7 +70,7 @@
 	/* Etape 4 : envoyer un message au serveur. Ce message est une chaîne de caractères saisie au clavier. Vous pouvez utiliser une autre fonction pour la saisie. */
      
 	int snd = 0, i = 0, reponse = 0, rcv = 0, octet_sended = 0, octet_received = 0;
-
+	int appel_to_send = 0;
 	printf("saisir un message à envoyer (moins de 200 caracteres) \n");
 	
 	char m[1500];
@@ -86,6 +86,8 @@
 			exit(1);
 		}
 		
+		appel_to_send++;
+
 		printf("Client : envoi fait, j'attends la reponse du serveur \n");
 
 		rcv = recv (ds, &reponse, sizeof(int), 0) ;
