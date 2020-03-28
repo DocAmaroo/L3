@@ -20,8 +20,8 @@
 	/* je passe en paramètre l'adresse de la socket d'écoute du serveur
 			(IP et numéro de port). Je teste donc le passage de parametres */
 
-	if (argc != 4){
-		printf("utilisation : %s ip_serveur port_serveur nb_iterations\n", argv[0]);
+	if (argc != 3){
+		printf("utilisation : %s ip_serveur port_serveur\n", argv[0]);
 		exit(0);
 	}
 
