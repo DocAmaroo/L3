@@ -14,6 +14,6 @@
     ```
     Sur le terminal client exécuté :
     ```bash
-    ./client [IP ADRESS] [PORT NUMBER] [NB ITERATIONS]
+    ./client [IP ADRESS] [PORT NUMBER]
     #[IP ADRESS] sera l'adresse récupéré à l'étape 3
     ```
