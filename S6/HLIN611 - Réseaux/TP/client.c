@@ -8,23 +8,23 @@
 	#include <string.h>
 
 
-int sendTCP(int socket, char* msg, int size){
+/* long message pour les test :
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent congue nunc a eros venenatis aliquam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris euismod magna eu tempus feugiat. Aliquam dolor libero, sagittis a ligula ut, finibus pretium neque. Cras sit amet rutrum dui, vel cursus lacus. Phasellus lectus nisl, blandit in egestas id, auctor in nibh. Aliquam eleifend, tellus sed euismod porta, elit sapien molestie arcu, eget hendrerit lectus tortor at dolor. Nullam rutrum erat sit amet libero accumsan sagittis. Sed hendrerit justo nec augue tempus, at ornare dolor accumsan. Vivamus sed nunc sit amet lorem auctor consectetur. Morbi vel facilisis ex. Maecenas ultrices enim est, a sollicitudin quam viverra vitae. Donec vel euismod velit. Integer porttitor justo at orci interdum sodales. In accumsan est nec elementum scelerisque. Nunc gravida porta nisl, ac feugiat leo. Sed sodales, nisi eget gravida commodo, tortor nulla hendrerit magna, tincidunt tincidunt orci risus et quam. Donec ultricies enim non ex pellentesque, et elementum augue dictum. Suspendisse dapibus erat sit amet fermentum ornare. In ac hendrerit tortor. Sed dapibus, nulla ut tempus tincidunt, nunc est sagittis tortor, a dignissim lacus nisi vel sapien. Proin consequat eget elit vel imperdiet. Nam at eleifend velit. Fusce vel tortor et ligula elementum auctor. Nulla ornare ex ut quam dignissim semper. Sed vitae leo et risus luctus venenatis. Vivamus condimentum at sapien non varius. Aenean id urna porttitor, suscipit purus id, sollicitudin eros. Quisque in felis quis dolor condimentum facilisis. Proin quam lorem, facilisis sed suscipit at, fringilla in augue. Phasellus mattis sed nulla eu mollis. Phasellus eget purus auctor, tristique quam a, dignissim augue. Sed dolor eros, tristique vel ligula ut, euismod lacinia diam. Sed nec fermentum ante, id blandit nisi. Etiam eu sapien lacinia, pellentesque nibh non, faucibus nisl. Proin pretium magna massa, aliquet egestas tortor pharetra ac. Ut portti
+*/
 
-	printf("Dans sendTCP()\n");
+int sendTCP(int socket, char* msg, int size){
 
 	int snd = 0;
 
-	if ( strlen(msg) < size-1 ){
+	if ( strlen(msg) < size ){
 		snd = send(socket, msg, strlen(msg), 0);
 	} else {
-		snd = send(socket, msg, size-1, 0);
+		snd = send(socket, msg, size, 0);
 	}
 
 	if (snd == -1){
-		printf("sendTCP() hover\n");
 		return 0;
 	} else {
-		printf("sendTCP() hover\n");
 		return 1;
 	}
 
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
 
 		rcv = recv(ds, &reponse, sizeof(int), 0);
 
-		octetReceived += rcv;
+		octetReceived += reponse;
 
 		i++;
 	}
@@ -129,7 +129,3 @@ int main(int argc, char *argv[]) {
 // 		return reponse;
 // 	}
 // }
-
-/* long message pour les test :
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent congue nunc a eros venenatis aliquam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris euismod magna eu tempus feugiat. Aliquam dolor libero, sagittis a ligula ut, finibus pretium neque. Cras sit amet rutrum dui, vel cursus lacus. Phasellus lectus nisl, blandit in egestas id, auctor in nibh. Aliquam eleifend, tellus sed euismod porta, elit sapien molestie arcu, eget hendrerit lectus tortor at dolor. Nullam rutrum erat sit amet libero accumsan sagittis. Sed hendrerit justo nec augue tempus, at ornare dolor accumsan. Vivamus sed nunc sit amet lorem auctor consectetur. Morbi vel facilisis ex. Maecenas ultrices enim est, a sollicitudin quam viverra vitae. Donec vel euismod velit. Integer porttitor justo at orci interdum sodales. In accumsan est nec elementum scelerisque. Nunc gravida porta nisl, ac feugiat leo. Sed sodales, nisi eget gravida commodo, tortor nulla hendrerit magna, tincidunt tincidunt orci risus et quam. Donec ultricies enim non ex pellentesque, et elementum augue dictum. Suspendisse dapibus erat sit amet fermentum ornare. In ac hendrerit tortor. Sed dapibus, nulla ut tempus tincidunt, nunc est sagittis tortor, a dignissim lacus nisi vel sapien. Proin consequat eget elit vel imperdiet. Nam at eleifend velit. Fusce vel tortor et ligula elementum auctor. Nulla ornare ex ut quam dignissim semper. Sed vitae leo et risus luctus venenatis. Vivamus condimentum at sapien non varius. Aenean id urna porttitor, suscipit purus id, sollicitudin eros. Quisque in felis quis dolor condimentum facilisis. Proin quam lorem, facilisis sed suscipit at, fringilla in augue. Phasellus mattis sed nulla eu mollis. Phasellus eget purus auctor, tristique quam a, dignissim augue. Sed dolor eros, tristique vel ligula ut, euismod lacinia diam. Sed nec fermentum ante, id blandit nisi. Etiam eu sapien lacinia, pellentesque nibh non, faucibus nisl. Proin pretium magna massa, aliquet egestas tortor pharetra ac. Ut porttitor lorem at dapibus efficitur. Suspendisse odio nisi, volutpat nec turpis eu, facilisis auctor elit.
-*/
