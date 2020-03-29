@@ -90,7 +90,6 @@
 	while (i < atoi(argv[3]) ){
 
 		if ( strlen(m) < size_m-1 ){
-
 			snd = send(ds, m, strlen(m), 0);
 		} else {
 			snd = send(ds, m, size_m-1, 0);
@@ -105,23 +104,21 @@
 		realOctetSended += strlen(m);
 		octetSended += snd;
 
+		rcv = recv (ds, &reponse, sizeof(int), 0);
+
+		if(rcv == -1) {
+			perror("Erreur: ");
+			exit(1);
+		}
+		else if(rcv == 0) {
+			printf("Le socket a été fermé.\n");
+			exit(1);
+		}
+
+		octetReceived += reponse;
+		
 		i++;
 	}
-
-	printf("Client : envoi fait, j'attends la reponse du serveur \n");
-
-	rcv = recv (ds, &reponse, sizeof(int), 0) ;
-	
-	if(rcv == -1) {
-		perror("Erreur: ");
-		exit(1);
-	}
-	else if(rcv == 0) {
-		printf("Le socket a été fermé.\n");
-		exit(1);
-	}
-
-	octetReceived += reponse;
 
 	printf("Client : Nombre d'appel à la fonction send = %i\n", nbCallToSend);
 	printf("\n____ Quota\n");

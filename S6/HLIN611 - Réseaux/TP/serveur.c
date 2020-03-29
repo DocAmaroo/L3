@@ -103,17 +103,30 @@
 
 	/* Etape 5 : réception d'un message de type chaîne de caractères */
 
-	int taille = 0, rcv = 0, snd = 0;
-	char buffer[4000];
-	
-	while(1){
+	int taille = 0, rcv = 0, snd = 0,
+	octetReceived = 0,
+	nbCallToRecv = 0;
 
-		//on récupère la taille du message
-		rcv = recv(dsCv, &taille, sizeof(taille), 0);
+	char buffer[4000];
+
+	//on récupère la taille du message
+	rcv = recv(dsCv, &taille, sizeof(taille), 0);
+	
+	if(rcv == -1) {
+		perror("Erreur: ");
+		exit(1);
+	}
+	else if(rcv == 0) {
+		printf("Le socket a été fermé.\n");
+		exit(1);
+	}
+
+	while(1){
 
 		//on lit le message
 		rcv = recv(dsCv, buffer, taille, 0);
-		
+		nbCallToRecv++;
+
 		if(rcv == -1) {
 			perror("Erreur: ");
 			exit(1);
@@ -123,6 +136,9 @@
 			exit(1);
 		}
 		
+		octetReceived += rcv;
+		printf("Serveur : j'ai reçu %d octets\n", octetReceived);
+		printf("Serveur : Nombre d'appel à recv() = %d\n", nbCallToRecv);
 		buffer[rcv]  = '\0';
 
 		snd = send(dsCv, &rcv, sizeof(int), 0);
