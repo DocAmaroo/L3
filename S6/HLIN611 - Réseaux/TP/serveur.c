@@ -7,26 +7,36 @@
 #include <stdlib.h>
 #include <string.h>
 
+int OCTET_RECEIVED = 0;
 
 int recvTCP(int socket, char* msg, int size){
 	
 	int rcv = recv (socket, msg, size, 0);
-	printf("Nb octet lus : %d\n", rcv);
 
 	if(rcv == -1) {
+
 		perror("Erreur: ");
-		exit(1);
+		return -1;
+	
 	}
+	
 	else if(rcv == 0) {
+	
 		printf("Le socket a été fermé.\n");
-		exit(1);
+		return 0;
+	
 	} else {
+
+		printf("Nb octet lus : %d\n", rcv);
+		
 		int snd = send(socket, &rcv, sizeof(int), 0);
 
 		if (snd == -1){
-			printf("Serveur : send n'a pas fonctionné");
+			printf("Serveur : send n'a pas fonctionné\n");
 		}
 
+		OCTET_RECEIVED += size;
+		printf("Serveur : j'ai reçu %d octets\n", OCTET_RECEIVED);
 		return 1;
 	}
 }
@@ -106,9 +116,7 @@ int main(int argc, char *argv[]){
 
 	/* Etape 5 : réception d'un message de type chaîne de caractères */
 
-	int rcv = 0, snd = 0, taille = 0,
-	octetReceived = 0,
-	nbCallToRecv = 0;
+	int rcv = 0, taille = 0, nbCallToRecv = 0;
 
 	char buffer[4000];
 
@@ -129,20 +137,13 @@ int main(int argc, char *argv[]){
 		rcv = recvTCP(dsCv, buffer, taille);
 		nbCallToRecv++;
 
-		if(rcv == -1) {
-			perror("Erreur: ");
-			exit(1);
-		} else if(rcv == 0) {
-			printf("Le socket a été fermé.\n");
-			exit(1);
-		} else {
-			octetReceived += taille;
+		if ( rcv <= 0 ) {
+			break;
 		}
-
-		printf("Serveur : j'ai reçu %d octets\n", octetReceived);
-		printf("Serveur : Nombre d'appel à recv() = %d\n", nbCallToRecv);
 	}
 	
+	printf("Serveur : Nombre total d'appel à recv() = %d\n", nbCallToRecv);
+
 	// Etape 7 : fermeture de la socket du client
 	printf("Serveur : fin du dialogue avec le client\n");
 	close (dsCv);

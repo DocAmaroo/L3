@@ -1,12 +1,13 @@
-	#include <stdio.h>
-	#include <unistd.h>
-	#include <sys/types.h>
-	#include <sys/socket.h>
-	#include <netdb.h>
-	#include <stdlib.h>
-	#include <arpa/inet.h>
-	#include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <stdlib.h>
+#include <arpa/inet.h>
+#include <string.h>
 
+int OCTET_RECEIVED = 0;
 
 /* long message pour les test :
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent congue nunc a eros venenatis aliquam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris euismod magna eu tempus feugiat. Aliquam dolor libero, sagittis a ligula ut, finibus pretium neque. Cras sit amet rutrum dui, vel cursus lacus. Phasellus lectus nisl, blandit in egestas id, auctor in nibh. Aliquam eleifend, tellus sed euismod porta, elit sapien molestie arcu, eget hendrerit lectus tortor at dolor. Nullam rutrum erat sit amet libero accumsan sagittis. Sed hendrerit justo nec augue tempus, at ornare dolor accumsan. Vivamus sed nunc sit amet lorem auctor consectetur. Morbi vel facilisis ex. Maecenas ultrices enim est, a sollicitudin quam viverra vitae. Donec vel euismod velit. Integer porttitor justo at orci interdum sodales. In accumsan est nec elementum scelerisque. Nunc gravida porta nisl, ac feugiat leo. Sed sodales, nisi eget gravida commodo, tortor nulla hendrerit magna, tincidunt tincidunt orci risus et quam. Donec ultricies enim non ex pellentesque, et elementum augue dictum. Suspendisse dapibus erat sit amet fermentum ornare. In ac hendrerit tortor. Sed dapibus, nulla ut tempus tincidunt, nunc est sagittis tortor, a dignissim lacus nisi vel sapien. Proin consequat eget elit vel imperdiet. Nam at eleifend velit. Fusce vel tortor et ligula elementum auctor. Nulla ornare ex ut quam dignissim semper. Sed vitae leo et risus luctus venenatis. Vivamus condimentum at sapien non varius. Aenean id urna porttitor, suscipit purus id, sollicitudin eros. Quisque in felis quis dolor condimentum facilisis. Proin quam lorem, facilisis sed suscipit at, fringilla in augue. Phasellus mattis sed nulla eu mollis. Phasellus eget purus auctor, tristique quam a, dignissim augue. Sed dolor eros, tristique vel ligula ut, euismod lacinia diam. Sed nec fermentum ante, id blandit nisi. Etiam eu sapien lacinia, pellentesque nibh non, faucibus nisl. Proin pretium magna massa, aliquet egestas tortor pharetra ac. Ut portti
@@ -14,7 +15,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent congue nunc a 
 
 int sendTCP(int socket, char* msg, int size){
 
-	int snd = 0;
+	int snd = 0, rcv = 0, reponse = 0;
 
 	if ( strlen(msg) < size ){
 		snd = send(socket, msg, strlen(msg), 0);
@@ -25,9 +26,21 @@ int sendTCP(int socket, char* msg, int size){
 	if (snd == -1){
 		return 0;
 	} else {
-		return 1;
+		rcv = recv(socket, &reponse, sizeof(int), 0);
+
+		if(rcv == -1) {
+			perror("Erreur: ");
+			exit(1);
+		}
+		else if(rcv == 0) {
+			printf("Le socket a été fermé.\n");
+			exit(1);
+		} else {
+			OCTET_RECEIVED += rcv;
+		}
 	}
 
+	return 1;
 }
 
 int main(int argc, char *argv[]) {
@@ -70,8 +83,8 @@ int main(int argc, char *argv[]) {
 
 	/* Etape 4 : envoyer un message au serveur. Ce message est une chaîne de caractères saisie au clavier. Vous pouvez utiliser une autre fonction pour la saisie. */
 
-	int snd = 0, reponse = 0, rcv = 0,
-	octetSended = 0, octetReceived = 0,
+	int snd = 0,
+	octetSended = 0,
 	nbCallToSend = 0;
 
 	printf("saisir un message à envoyer (moins de 1500 caracteres) \n");
@@ -89,7 +102,7 @@ int main(int argc, char *argv[]) {
 	int i = 0;
 	while (i < atoi(argv[3]) ){
 
-		snd = sendTCP(ds, m, sizeMax);
+		snd = sendTCP(ds, m, nbOctet);
 
 		if ( snd ){
 			octetSended += nbOctet;
@@ -97,17 +110,13 @@ int main(int argc, char *argv[]) {
 
 		nbCallToSend++;
 
-		rcv = recv(ds, &reponse, sizeof(int), 0);
-
-		octetReceived += reponse;
-
 		i++;
 	}
 
 	printf("\n____ Quota\n");
 	printf("Client : Nombre d'appel à la fonction send = %i\n", nbCallToSend);
-	printf("Client : Au total j'ai envoyé %i octets et le serveur me répond qu'il a reçu : %d octets \n", octetSended, octetReceived) ;
-	printf("Client : La perte d'octets s'élève à %d%%\n", (100-(octetReceived*100)/octetSended) );
+	printf("Client : Au total j'ai envoyé %i octets et le serveur me répond qu'il a reçu : %d octets \n", octetSended, OCTET_RECEIVED) ;
+	printf("Client : La perte d'octets s'élève à %d%%\n", (100-(OCTET_RECEIVED*100)/octetSended) );
 
 	close (ds);
 	printf("Client : je termine\n");
