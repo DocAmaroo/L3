@@ -7,38 +7,50 @@
 #include <stdlib.h>
 #include <string.h>
 
+int OCTET_SENDED = 0;
 int OCTET_RECEIVED = 0;
 
-int recvTCP(int socket, char* msg, int size){
-	
-	int rcv = recv (socket, msg, size, 0);
+int sendTCP(int socket, char* msg, int sizeMsg){
 
-	if(rcv == -1) {
+	int nbOctet = 0;
 
-		perror("Erreur: ");
-		return -1;
-	
-	}
-	
-	else if(rcv == 0) {
-	
-		printf("Le socket a été fermé.\n");
-		return 0;
-	
-	} else {
-
-		printf("Nb octet lus : %d\n", rcv);
+	while(nbOctet < sizeMsg){
 		
-		int snd = send(socket, &rcv, sizeof(int), 0);
+		int snd = send(socket, msg+nbOctet, sizeMsg-nbOctet, 0);
 
-		if (snd == -1){
-			printf("Serveur : send n'a pas fonctionné\n");
+		if (snd < 0){
+			return -1;
+		} else if (snd == 0){
+			return 0;
+		} else {
+			nbOctet += snd;
 		}
-
-		OCTET_RECEIVED += size;
-		printf("Serveur : j'ai reçu %d octets\n", OCTET_RECEIVED);
-		return 1;
 	}
+	
+	OCTET_SENDED += nbOctet;
+	return 1;
+}
+
+int recvTCP(int socket, char* msg, int sizeMsg){
+	
+	int nbOctet = 0;
+
+	while(nbOctet < sizeMsg){
+		
+		int rcv = recv(socket, msg+nbOctet, sizeMsg-nbOctet, 0);
+
+		if (rcv < 0){
+			return -1;
+		} else if (rcv == 0){
+			return 0;
+		} else {
+			nbOctet += rcv;
+		}
+	}
+
+	printf("j'ai reçu %d octets\n", nbOctet);
+	OCTET_RECEIVED = nbOctet;
+	return 1;
 }
 
 int main(int argc, char *argv[]){
@@ -116,32 +128,60 @@ int main(int argc, char *argv[]){
 
 	/* Etape 5 : réception d'un message de type chaîne de caractères */
 
-	int rcv = 0, taille = 0, nbCallToRecv = 0;
+	int snd = 0, rcv = 0, nbCallToRecv = 0, taille = 0;
 
-	char buffer[4000];
-
-	//on récupère la taille du message
-	rcv = recv(dsCv, &taille, sizeof(int), 0);
-	
-	if(rcv == -1) {
-		perror("Erreur: ");
-		exit(1);
-	} else if(rcv == 0) {
-		printf("Le socket a été fermé.\n");
-		exit(1);
-	}
+	int sizeMax = 4000;
+	char buffer[sizeMax];
 
 	while(1){
 
 		//on lit le message
-		rcv = recvTCP(dsCv, buffer, taille);
+		rcv = recvTCP(dsCv, (char*) &taille, sizeof(int));
+
+		if(rcv == -1) {
+			perror("Erreur: ");
+			exit(1);
+		} else if(rcv == 0) {
+			printf("Le socket a été fermé.\n");
+			break;
+		} else {
+			snd = sendTCP(dsCv, (char *) &OCTET_RECEIVED, sizeof(int));
+			if(snd == -1) {
+				perror("Erreur: ");
+				exit(1);
+			} else if(snd == 0) {
+				printf("Le socket a été fermé.\n");
+			}
+		}
+
 		nbCallToRecv++;
 
-		if ( rcv <= 0 ) {
+		rcv = recvTCP(dsCv, buffer, taille);
+		if(rcv == -1) {
+			perror("Erreur: ");
+			exit(1);
+		} else if(rcv == 0) {
+			printf("Le socket a été fermé.\n");
 			break;
+		} else {
+
+			buffer[taille-1] = '\0';
+
+			snd = sendTCP(dsCv, (char*) &OCTET_RECEIVED, sizeof(int));
+
+			if(snd == -1) {
+				perror("Erreur: ");
+				exit(1);
+			} else if(snd == 0) {
+				printf("Le socket a été fermé.\n");
+			}
 		}
+		
+		nbCallToRecv++;
 	}
 	
+	
+
 	printf("Serveur : Nombre total d'appel à recv() = %d\n", nbCallToRecv);
 
 	// Etape 7 : fermeture de la socket du client
