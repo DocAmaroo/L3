@@ -4,8 +4,8 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <stdlib.h>
-#include<arpa/inet.h>
-#include<string.h>
+#include <arpa/inet.h>
+#include <string.h>
 
 /* Rôle du client : 
 - envoyer une demande de connexion à un serveur,
@@ -28,19 +28,24 @@
 /* Si vous avez utilisé des variables globales, pas de souci. */
 int sendTCP(int socket, const char * buffer, size_t length, unsigned int *nbBytesSent, unsigned int * nbCallSend){
 
- ...
-  while (...){
+  int sent = 1;
+  size_t nbBytes = length;
+
+  while(nbBytes != 0){
     
-    sent = send(...);
-    
-    if (...) {
+    sent = send(socket, buffer, nbBytes, 0);
+
+    if (sent <= 0){
       return sent;
     }
 
-    ...
+    buffer += sent;
+    nbBytes -= sent;
+
     (*nbBytesSent)+=sent;
     (*nbCallSend)++;
-  }
+	}
+
   return 1;
 }
 
@@ -56,17 +61,34 @@ int main(int argc, char *argv[]) {
   }
 
   /* créer une socket, demader une connexion au serveur */   
-  int ds = socket(...);
+	int ds = socket(PF_INET, SOCK_STREAM, 0);
 
-
-  ...
-
-  
-  printf("Client : demande de connexion reussie \n");
+	if (ds == -1){
+		printf("Client : pb creation socket\n");
+		exit(1);
+	}
 
   // Je peux tester l'exécution de cette étape avant de passer à la suite.
+	printf("Client : creation de la socket : ok\n");
 
-  
+  struct sockaddr_in adrServ;
+	adrServ.sin_addr.s_addr = inet_addr(argv[1]) ;
+	adrServ.sin_family = AF_INET;
+	adrServ.sin_port = htons(atoi(argv[2]));
+
+  socklen_t lgAdr = sizeof(struct sockaddr_in);
+
+	/* Etape 3 : envoyer une demande de connexion au serveur.*/
+	int conn = connect(ds, (struct sockaddr *) &adrServ, lgAdr);
+
+	// je traite les valeurs de retour
+	if (conn < 0){
+		perror ("Client : pb au connect :");
+		close (ds);
+    exit(1);
+	}
+
+	printf("Client : demande de connexion reussie \n");
 
   long int message;
   unsigned int nbTotalOctetsEnvoyes = 0;
@@ -75,16 +97,24 @@ int main(int argc, char *argv[]) {
   for(int i = 1; i <= atoi(argv[3]); i++){
     message = i; // pour passer d'un int à long int (de 4 à 8 octets). Vous pouvez faire autrement.
     
-    int snd = sendTCP(...);
+    int sent = sendTCP(ds, (char*)&message, sizeof(long int), &nbTotalOctetsEnvoyes, &nbAppelSend);
 
     /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
+    if (sent < 0) {
+      perror("Client : erreur lors de l'envoi :");
+      break;
+    }
+    else if (sent == 0) {
+      printf("Client: serveur déconnecté \n");
+      break;
+    }
 
-
-   printf("Client : j'ai envoyé au total %d octets avec %d appels à send \n",nbTotalOctetsEnvoyes,  nbAppelSend) ;
+    printf("Client : j'ai envoyé au total %d octets avec %d appels à send \n",nbTotalOctetsEnvoyes,  nbAppelSend) ;
 
   }
-  /*Terminer proprement. */
 
- ...
+  /*Terminer proprement. */
   printf("Client : je termine\n");
+  close(ds);
+
 }
