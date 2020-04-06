@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
   }
 
   /* créer une socket, demader une connexion au serveur */   
-	int ds = socket(PF_INET, SOCK_STREAM, 0);
+	int ds = socket(PF_INET, SOCK_DGRAM, 0);
 
 	if (ds == -1){
 		printf("Client : pb creation socket\n");
@@ -97,20 +97,19 @@ int main(int argc, char *argv[]) {
   for(int i = 1; i <= atoi(argv[3]); i++){
     message = i; // pour passer d'un int à long int (de 4 à 8 octets). Vous pouvez faire autrement.
     
-    int sent = sendTCP(ds, (char*)&message, sizeof(long int), &nbTotalOctetsEnvoyes, &nbAppelSend);
+    int sent = sendto(ds, (char *) &message, sizeof(long int), 0, (struct sockaddr *) &adrServ, lgAdr);
 
     /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
     if (sent < 0) {
       perror("Client : erreur lors de l'envoi :");
       close(ds);
       exit(1);
+    } else {
+      nbTotalOctetsEnvoyes += sent;
+      nbAppelSend++;
+      printf("Client : j'ai envoyé au total %d octets avec %d appels à send \n",nbTotalOctetsEnvoyes,  nbAppelSend) ;
     }
-    else if (sent == 0) {
-      printf("Client: serveur déconnecté \n");
-      break;
-    }
-
-    printf("Client : j'ai envoyé au total %d octets avec %d appels à send \n",nbTotalOctetsEnvoyes,  nbAppelSend) ;
+    
 
   }
 

@@ -25,8 +25,6 @@ int recvTCP(int socket, char *buffer, size_t length, unsigned int *nbBytesReceve
 
     (*nbBytesReceved) += received;
     (*nbCallRecv)++;
-
-    printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", *nbBytesReceved, *nbCallRecv);
   }
   
   return 1;
@@ -101,15 +99,10 @@ int main(int argc, char *argv[])
   unsigned int nbTotalOctetsRecus = 0;
   unsigned int nbAppelRecv = 0;
 
-  /* ce code commenté vous sera utile pour quelques tests.
-  printf("Serveur : saisir un caractère avant de poursuivre \n");
-  fgetc(stdin);
-  */
-
   while(1){ 
 
     // je n'ai pas besoin de garder tous les messages, j'écrase les précédents.
-    int rcv = recvTCP(dsCv, (char*)messagesRecus , sizeof(long int), &nbTotalOctetsRecus, &nbAppelRecv);  
+    int rcv = recvTCP(dsCv, (char*)messagesRecus, atoi(argv[2]), &nbTotalOctetsRecus, &nbAppelRecv);  
 
     /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
     if (rcv < 0){ 
@@ -131,6 +124,7 @@ int main(int argc, char *argv[])
   }
   
   printf("Serveur : je termine\n");
+  close(dsCv);
   close(ds);
 }
 

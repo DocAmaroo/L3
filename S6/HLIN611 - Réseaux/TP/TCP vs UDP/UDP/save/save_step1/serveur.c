@@ -111,48 +111,50 @@ int main(int argc, char *argv[]){
 
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
   if (rcv < 0){ 
+    printf("ça marche pas !");
     perror ("Serveur : probleme reception :");
     close(ds);
     exit (1);
+  } else {
+    nbAppelRecvfrom++;
+    nbTotalOctetsRecus += rcv;
+    printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecvfrom);
   }
-
-  nbAppelRecvfrom++;
-  nbTotalOctetsRecus += rcv;
-  printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecvfrom);
-
   
-  /* ce code commenté vous sera utile pour quelques tests.
+
+  /* ce code commenté vous sera utile pour quelques tests. 
   printf("Serveur : saisir un caractère avant de poursuivre \n");
   fgetc(stdin);
   */
-
+    
   while(1){ // le serveur n'a pas connaissance du nombre de messages
         // qu'il recevra, donc, il boucle et la gestion des
         // valeurs de retours de fonctions permettra de sortir
         // de la boucle pour arrêter le serveur.
     
-    int rcv = recvfrom(ds, (char *) (messagesRecus+1), sizeof(long int), 0, (struct sockaddr *) &addrC, &lgAddrC);
+    int rcv = recvfrom(ds, (char *)messagesRecus, sizeof(long int), 0, (struct sockaddr *) &addrC, &lgAddrC);
 
     /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
     if (rcv < 0){ 
-      perror ( "Serveur : probleme reception :");
+      perror ( "Serveur 2 : probleme reception :");
       close(ds);
       exit (1);
+    } else {
+      nbAppelRecvfrom++;
+      nbTotalOctetsRecus += rcv;
     }
-    
-    nbAppelRecvfrom++;
-    nbTotalOctetsRecus += rcv;
 
     printf("Serveur: le client %s:%d m'a envoyé un message  \n", inet_ntoa(addrC.sin_addr), ntohs(addrC.sin_port));
 
     if(messagesRecus[1] < messagesRecus[0]){ // si la valeur reçue est inférieure à la précédente, alors désordre.
-      printf("Serveur : reception dans le désordre : %ld reçu après %ld\n", messagesRecus[1], messagesRecus[0]);
+      printf("Serveur : reception dans le désordre : %ld reçu après %ld \n", messagesRecus[1], messagesRecus[0]);
     }
 
     /* garder la valeur précédente pour la prochaine comparaison*/
     messagesRecus[0] = messagesRecus[1];
   
     printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecvfrom);
+ 
   }
   
   // terminer proprement votre programme

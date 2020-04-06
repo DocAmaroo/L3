@@ -25,8 +25,6 @@ int recvTCP(int socket, char *buffer, size_t length, unsigned int *nbBytesReceve
 
     (*nbBytesReceved) += received;
     (*nbCallRecv)++;
-
-    printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", *nbBytesReceved, *nbCallRecv);
   }
   
   return 1;
@@ -41,9 +39,9 @@ int main(int argc, char *argv[])
     exit(1);
   }
   
-/*  Création de la socket d'écoute, nomage et mise en écoute.*/
+  /*  Création de la socket d'écoute, nomage et mise en écoute.*/
  
-  int ds = socket(PF_INET, SOCK_STREAM, 0);
+  int ds = socket(PF_INET, SOCK_DGRAM, 0);
 
 
   // Penser à tester votre code progressivement.
@@ -72,61 +70,33 @@ int main(int argc, char *argv[])
 
   printf("Serveur : nommage : ok\n");
   
-  int ecoute = listen(ds, 10);
-  if (ecoute < 0){
-    printf("Serveur : je suis sourd(e)\n");
-    close (ds);
-    exit (1);
-  } 
-
-  printf("Serveur : mise en écoute : ok\n");
-  printf("Serveur : j'attends la demande d'un client (accept) \n");
-
-  struct sockaddr_in adCv ; // pour obtenir l'adresse du client accepté.
-  socklen_t lgCv = sizeof (struct sockaddr_in);
-
-  int dsCv = accept(ds, (struct sockaddr *) &adCv, &lgCv);
-  if (dsCv < 0){
-    perror ( "Serveur, probleme accept :");
-    close(ds);
-    exit (1);
-  }
-
-  printf("Serveur : le client %s:%d\n", inet_ntoa(adCv.sin_addr), ntohs(adCv.sin_port));
-
-  /* Réception de messages, chaque message est un long int */
- 
   long int messagesRecus[500]; // pour recevoir plusieurs éléments en bloc (jusqu'à 4000 octets)
 
   unsigned int nbTotalOctetsRecus = 0;
-  unsigned int nbAppelRecv = 0;
+  unsigned int nbAppelRecvfrom = 0;
 
-  /* ce code commenté vous sera utile pour quelques tests.
-  printf("Serveur : saisir un caractère avant de poursuivre \n");
-  fgetc(stdin);
-  */
+  struct sockaddr_in addrC; // pour obtenir l'adresse du client accepté.
+  socklen_t lgAddrC = sizeof (struct sockaddr_in);
 
+  /* Réception de messages, chaque message est un long int */
+ 
   while(1){ 
 
     // je n'ai pas besoin de garder tous les messages, j'écrase les précédents.
-    int rcv = recvTCP(dsCv, (char*)messagesRecus , sizeof(long int), &nbTotalOctetsRecus, &nbAppelRecv);  
-
+    int rcv = recvfrom(ds, (char *) messagesRecus, atoi(argv[2]), 0, (struct sockaddr *) &addrC, &lgAddrC);
+  
     /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
     if (rcv < 0){ 
       perror ("Serveur, probleme reception :");
-      close(dsCv);
-      close(ds);
-      exit (1);
-    }
-    else if (rcv == 0)
-    {
-      printf("Serveur : la socket a été fermée\n");
-      close(dsCv);
       close(ds);
       exit (1);
     }
 
-    printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecv);
+    nbTotalOctetsRecus += rcv;
+    nbAppelRecvfrom++;
+
+    printf("Serveur : le client %s:%d m'a envoyé un message\n", inet_ntoa(addrC.sin_addr), ntohs(addrC.sin_port));
+    printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecvfrom);
  
   }
   

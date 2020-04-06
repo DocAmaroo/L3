@@ -125,7 +125,7 @@ int main(int argc, char *argv[]){
 
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
   if (rcv < 0){ 
-    perror ( "Serveur, probleme reception :");
+    perror ( "Serveur : probleme reception :");
     close(dsCv);
     close(ds);
     exit (1);
@@ -140,7 +140,7 @@ int main(int argc, char *argv[]){
 
   printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecv);
 
-  /* ce code commenté vous sera utile pour quelques tests. 
+  /* ce code commenté vous sera utile pour quelques tests.
   printf("Serveur : saisir un caractère avant de poursuivre \n");
   fgetc(stdin);
   */
@@ -150,19 +150,17 @@ int main(int argc, char *argv[]){
         // valeurs de retours de fonctions permettra de sortir
         // de la boucle pour arrêter le serveur.
     
-    rcv = recvTCP (dsCv, (char*)(messagesRecus+1) , sizeof(long int), &nbTotalOctetsRecus, &nbAppelRecv);  
+    rcv = recvTCP (dsCv, (char*) (messagesRecus+1) , sizeof(long int), &nbTotalOctetsRecus, &nbAppelRecv);  
 
     /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
     if (rcv < 0){ 
       perror ( "Serveur, probleme reception :");
-      close(dsCv);
       close(ds);
-      exit (1);
+      exit(1);
     }
     else if (rcv == 0)
     {
       printf("Serveur : la socket a été fermée\n");
-      close(dsCv);
       close(ds);
       exit (1);
     }
@@ -179,10 +177,6 @@ int main(int argc, char *argv[]){
   }
   
   // terminer proprement votre programme
-  close (dsCv);
-  printf("Serveur : fin du dialogue avec le client\n");
-  
-
   close (ds);
   printf("Serveur : je termine\n");
 }
