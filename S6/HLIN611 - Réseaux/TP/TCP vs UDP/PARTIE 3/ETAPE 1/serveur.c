@@ -114,7 +114,6 @@ int main(int argc, char *argv[])
       }
 
       printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecv);
-  
     }
   }
   

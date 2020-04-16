@@ -1,3 +1,5 @@
+Un message qui met trop de temps à arriver (> TTL) ou qui passe par plus de routeur que prévus => perte du paquet
+les couches transport communique entre elles autre que pour les paquets, notamment pour parler de son état
 # Etape 2
 
 ## Constats

@@ -1,3 +1,4 @@
+%mémo cd("../../mydoc/classes/FAC/L3/S6/HLIN602 - Logique/TP").%
 % s(a,b).
 % s(b,c).
 % s(c,d).
@@ -6,6 +7,7 @@
 % inf(X,Y) :- s(X,Y).
 % inf(X,Z) :-  s(X,Y), inf(Y,Z).
 
+% ----------- Exercice A
 homme(alberto).
 homme(jeanno).
 homme(popaul).
@@ -47,4 +49,12 @@ soeur(X,Y) :- femme(X), pere(Z,X), pere(Z,Y), mere(W,X), mere(W,Y).
 demifrere(X,Y) :- homme(X), not(frere(X,Y)), (pere(Z,X), pere(Z,Y); mere(W,X), mere(W,Y)).
 demisoeur(X,Y) :- femme(X), not(soeur(X,Y)), (pere(Z,X), pere(Z,Y); mere(W,X), mere(W,Y)).
 cousin(X,Y) :- not(soeur(X,Y)), not(frere(X,Y)), not(demifrere(X,Y)), not(demisoeur(X,Y)), grandparent(Z,X), grandparent(Z,Y).
-ancetre(X,Y) :- parent(Z,Y), ancetre(X,Z).
+ancetre(X,Y) :- parent(X,Y).
+ancetre(X,Y) :- parent(X,A), ancetre(A,Y).
+descendant(X,Y) :- parent(Y,X).
+descendant(X,Y) :- parent(Y,A), descendant(X,A).
+memefamille(X,Y) :- ancetre(A,X), ancetre(A,Y).
+
+% ----------- Exercice B
+q(X,Z) :− p(X,Y),p(Y,Z).
+p([1|Z],Z).

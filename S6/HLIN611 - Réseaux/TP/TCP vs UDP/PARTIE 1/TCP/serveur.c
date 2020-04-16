@@ -43,8 +43,6 @@ int recvTCP(int socket, char *buffer, size_t length, unsigned int *nbBytesReceve
 
     (*nbBytesReceved) += received;
     (*nbCallRecv)++;
-
-    printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", *nbBytesReceved, *nbCallRecv);
   }
   
   return 1;
@@ -69,12 +67,7 @@ int main(int argc, char *argv[]){
   }
 
   printf("Serveur : creation de la socket : ok\n");
-
-
-  // Rappel un seul client est à traiter.
-  printf("Serveur : j'attends la demande du client (accept) \n"); 
   
-
   struct sockaddr_in server;
   server.sin_family = AF_INET;
   server.sin_addr.s_addr = INADDR_ANY;
@@ -140,10 +133,9 @@ int main(int argc, char *argv[]){
 
   printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecv);
 
-  /* ce code commenté vous sera utile pour quelques tests.
+  /* ce code commenté vous sera utile pour quelques tests. */
   printf("Serveur : saisir un caractère avant de poursuivre \n");
   fgetc(stdin);
-  */
     
   while(1){ // le serveur n'a pas connaissance du nombre de messages
         // qu'il recevra, donc, il boucle et la gestion des

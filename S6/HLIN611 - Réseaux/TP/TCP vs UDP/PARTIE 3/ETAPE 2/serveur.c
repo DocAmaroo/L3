@@ -117,8 +117,6 @@ int main(int argc, char *argv[])
         continue;
       }
 
-  
-      struct requete req;
       /* Réception de messages, chaque message est un long int */
     
       long int messagesRecus[500]; // pour recevoir plusieurs éléments en bloc (jusqu'à 4000 octets)
@@ -139,9 +137,7 @@ int main(int argc, char *argv[])
           break;
         }
         
-
         printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecv);
-    
       }
     }
   }
