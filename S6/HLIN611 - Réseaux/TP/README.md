@@ -75,39 +75,26 @@
 - Adresse IP source
 - Adresse IP de destination
 
+
+Un message qui met trop de temps à arriver (> TTL) ou qui passe par plus de routeur que prévus => perte du paquet
+
 # Cheminement d'un paquet dans le modèle TCP/IP
 
 Avant d'arriver à sa destination final un paquet aurait obtenu 4 en-têtes au total.
 
 ##### 1er en-tête : couche application
-Il permet à deux ordinateurs de se comprendre. Il permet de savoir comment interpréter les données (type de compression, syntaxe...)
+Il permet à deux ordinateurs de se comprendre. Il permet de savoir comment interpréter les données (type de compression, syntaxe...).
+Les couches transport communique entre elles autre que pour les paquets, notamment pour parler de son état
 
 ##### 2nd en-tête : couche transport
-Il suis le message tout le long de son acheminement en s'adaptant si il rencontre des problèmes (bouchons / erreur). Le message peut-être découpé en plusieurs morceau pour respecter les normes de certains réseau
+Il suis le message tout le long de son acheminement en s'adaptant si il rencontre des problèmes (bouchons / erreur). 
+Le message peut-être découpé en plusieurs morceau pour respecter les normes de certains réseau
 
 ##### 3eme en-tête : couche réseau
 Indique le chemin jusqu'au prochain routeur
 
 ##### 4eme en-tête : couche liaison
 Permet de s'adapter au réseau par lequel il passe pour respecter le type de matériel (type de codage, niveau électrique...)
-
-
-Un message qui met trop de temps à arriver (> TTL) ou qui passe par plus de routeur que prévus => perte du paquet
-les couches transport communique entre elles autre que pour les paquets, notamment pour parler de son état
-# Etape 2
-
-## Constats
-$\mathbb{N} :$ Taille du message (ici 8 octets = long int)
-$\mathbb{K} :$ Taille du buffer de réception
-$i \ \ :$ Nombres d'itérations
-
-
-var \ protocole | TCP | UDP
---- | --- | ---
-$\mathbb{K} < \mathbb{N}$ | Réception **complète** de chaque paquet $\color{green}✔$ <br> Nécessite plus d'appel à `recv()` pour pouvoir lire chaque paquet. | Réception **incomplète** de chaque paquet ❌ <br> Chaque message reçu est **tronqué** par $(\mathbb{N} - \mathbb{K})$ octets, ceci implique une perte de donnée de $(\mathbb{N} - \mathbb{K}) * i$ octets.
-$\mathbb{K} \geqslant \mathbb{N}$ | Réception **complète** de chaque paquet $\color{green}✔$ <br> Si il y avait des paquets dans la *"file d'attente"*, le buffer se remplit entièrement en prenant une partie du message suivant, réduisant le nombre d'appel à `recv()` | Réception **complète** de chaque paquet $\color{green}✔$ <br> Chaque paquet est lu un par un donc le nombre d'appel à `recv()` $ = i$.
-
-# Etape 3
 
 ## Types de mode
 
@@ -119,6 +106,18 @@ duplication impossible | duplication possible
 mode connecté | mode non connecté
 serveur se referme après chaque fin de réception du client | serveur tourne en permanence
 unicité des sockets dédiées à chaque client (réduit les chances de conflits ?) | une seule socket pour tout les clients (risque de conflits ?)
+
+
+## Constats
+$\mathbb{N} :$ Taille du message (ici 8 octets = long int)
+$\mathbb{K} :$ Taille du buffer de réception
+$i \ \ :$ Nombres d'itérations
+
+
+var \ protocole | TCP | UDP
+--- | --- | ---
+$\mathbb{K} < \mathbb{N}$ | Réception **complète** de chaque paquet $\color{green}✔$ <br> Nécessite plus d'appel à `recv()` pour pouvoir lire chaque paquet. | Réception **incomplète** de chaque paquet ❌ <br> Chaque message reçu est **tronqué** par $(\mathbb{N} - \mathbb{K})$ octets, ceci implique une perte de donnée de $(\mathbb{N} - \mathbb{K}) * i$ octets.
+$\mathbb{K} \geqslant \mathbb{N}$ | Réception **complète** de chaque paquet $\color{green}✔$ <br> Si il y avait des paquets dans la *"file d'attente"*, le buffer se remplit entièrement en prenant une partie du message suivant, réduisant le nombre d'appel à `recv()` | Réception **complète** de chaque paquet $\color{green}✔$ <br> Chaque paquet est lu un par un donc le nombre d'appel à `recv()` $ = i$.
 
 ## Exemple pour l'envoi d'un message
 
