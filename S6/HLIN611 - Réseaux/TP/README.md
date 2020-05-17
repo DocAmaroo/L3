@@ -27,7 +27,7 @@
     <tr>
         <td style="background-color:orange"> Réseau </td>
         <td> Adresse les interfaces globalement et détermine les meilleurs chemins à travers un inter-réseau </td>
-        <td style="background-color:orange"> Réseau </td>
+        <td style="background-color:orange"> Internet </td>
     </tr>
     <tr>
         <td style="background-color:lightpink"> Liaison de données </td>
@@ -40,6 +40,31 @@
     </tr>
 </table>
 
+#### Plus en détail dans le modèle TCP/IP
+##### Couche Application
+- Elle est la couche de communication qui s’interface avec les utilisateurs.
+- Exemples de protocoles applicatifs : HTTP, DNS, DHCP, FTP, …
+
+*Matériel : Ordinateur*
+##### Couche Transport
+- Elle est responsable du dialogue entre les hôtes terminaux d’une communication.
+- Les applications utiliseront TCP pour un transport fiable et UDP sans ce service.
+- Les routeurs NAT et les pare-feu opèrent un filtrage au niveau de la couche transport.
+
+*Matériel : Ordinateur, routeur NAT, pare-feux*
+##### Couche Internet
+- Elle permet de déterminer les meilleurs chemins à travers les réseaux en fonction des adresses IPv4 ou IPv6 à portée globale.
+- Les routeurs transfèrent le trafic IP qui ne leur est pas destiné.
+
+*Matériel : Routeurs*
+##### Couche Accès au réseaux
+- TCP/IP ne s’occupe pas de la couche Accès Réseau
+- Elle organise le flux binaire et identifie physiquement les hôtes
+- Elle place le flux binaire sur les supports physiques
+- Les commutateurs, cartes réseau, connecteurs, câbles, etc. font partie de cette couche
+
+*Matériel : Commutateurs, cartes d’interface réseau, câblage*
+
 # Structure d'un en-tête IPV4
 - Version : définit la version du paquet IP
 - Service différenciés : Définit la priorité de chaque paquet.
@@ -50,12 +75,12 @@
 - Adresse IP source
 - Adresse IP de destination
 
-# Cheminement d'un paquet dans les couches
+# Cheminement d'un paquet dans le modèle TCP/IP
 
 Avant d'arriver à sa destination final un paquet aurait obtenu 4 en-têtes au total.
 
 ##### 1er en-tête : couche application
-Il Permet à deux ordinateurs de se comprendre. Il permet de savoir comment interpréter les données (type de compression, syntaxe...)
+Il permet à deux ordinateurs de se comprendre. Il permet de savoir comment interpréter les données (type de compression, syntaxe...)
 
 ##### 2nd en-tête : couche transport
 Il suis le message tout le long de son acheminement en s'adaptant si il rencontre des problèmes (bouchons / erreur). Le message peut-être découpé en plusieurs morceau pour respecter les normes de certains réseau
