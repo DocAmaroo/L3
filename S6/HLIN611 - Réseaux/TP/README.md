@@ -1,3 +1,72 @@
+# Modèle OSI et TCP/IP
+
+<table>
+    <tr>
+        <th> OSI </th>
+        <th> Description </th>
+        <th> TCP/IP </th>
+    </tr>
+    <tr>
+        <td style="background-color:lightgreen"> Application </td>
+        <td> Services applicatifs au plus proche des utilisateurs </td>
+        <td style="background-color:lightgreen" rowspan="3"> Application </td>
+    </tr>
+    <tr>
+        <td style="background-color:lightgreen"> Présentation </td>
+        <td> Encode, encrypte, compresse les données utiles </td>
+    </tr>
+    <tr>
+        <td style="background-color:lightgreen"> Session </td>
+        <td> Etablit des sessions entre des applications </td>
+    </tr>
+    <tr>
+        <td style="background-color:lightblue"> Transport </td>
+        <td> Etablit, maintien et termine des sessions entre des périphériques terminaux </td>
+        <td style="background-color:lightblue"> Transport </td>
+    </tr>
+    <tr>
+        <td style="background-color:orange"> Réseau </td>
+        <td> Adresse les interfaces globalement et détermine les meilleurs chemins à travers un inter-réseau </td>
+        <td style="background-color:orange"> Réseau </td>
+    </tr>
+    <tr>
+        <td style="background-color:lightpink"> Liaison de données </td>
+        <td> Adresse localement les interfaces, livre les informations localement, méthode MAC </td>
+        <td rowspan="2" style="background-color:lightpink"> Accès au réseau </td>
+    </tr>
+    <tr>
+        <td style="background-color:lightpink"> Physique </td>
+        <td> Encodage du signal, câblage et connecteurs, spécifications physiques </td>
+    </tr>
+</table>
+
+# Structure d'un en-tête IPV4
+- Version : définit la version du paquet IP
+- Service différenciés : Définit la priorité de chaque paquet.
+- Des champs permettant d'identifier et valider le paquet
+- Des champs gardant une trace des paquets qui ont été fragmentés lors d'une transmission sur un support avec un MTU _(Maximum Transmission Unit)_ inférieur
+- TTL : valeur décrémenté à chaque passage à travers un routeur
+- Protocoles : Indique le type de protocole de couche supérieur _(TCP / UDP )_
+- Adresse IP source
+- Adresse IP de destination
+
+# Cheminement d'un paquet dans les couches
+
+Avant d'arriver à sa destination final un paquet aurait obtenu 4 en-têtes au total.
+
+##### 1er en-tête : couche application
+Il Permet à deux ordinateurs de se comprendre. Il permet de savoir comment interpréter les données (type de compression, syntaxe...)
+
+##### 2nd en-tête : couche transport
+Il suis le message tout le long de son acheminement en s'adaptant si il rencontre des problèmes (bouchons / erreur). Le message peut-être découpé en plusieurs morceau pour respecter les normes de certains réseau
+
+##### 3eme en-tête : couche réseau
+Indique le chemin jusqu'au prochain routeur
+
+##### 4eme en-tête : couche liaison
+Permet de s'adapter au réseau par lequel il passe pour respecter le type de matériel (type de codage, niveau électrique...)
+
+
 Un message qui met trop de temps à arriver (> TTL) ou qui passe par plus de routeur que prévus => perte du paquet
 les couches transport communique entre elles autre que pour les paquets, notamment pour parler de son état
 # Etape 2
